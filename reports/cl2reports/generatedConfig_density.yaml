@@ -2,7 +2,7 @@ name: density
 automanagednamespaces: 0
 namespace:
   number: 1
-  prefix: test-ho2jw3
+  prefix: test-mxznyf
   deletestalenamespaces: false
   deleteautomanagednamespaces: true
   enableexistingnamespaces: false
