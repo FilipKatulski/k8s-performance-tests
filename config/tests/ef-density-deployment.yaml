@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.Name}}
+  labels:
+    group: {{.Group}}
+spec:
+  replicas: {{.Replicas}}
+  selector:
+    matchLabels:
+      name: {{.Name}}
+  template:
+    metadata:
+      labels:
+        name: {{.Name}}
+        group: {{.Group}}
+    spec:
+      hostNetwork: {{.UseHostNetwork}}
+      automountServiceAccountToken: false
+      containers:
+      - image: {{.Image}}
+        imagePullPolicy: IfNotPresent
+        name: {{.Name}}
+        ports:
+        resources:
+          requests:
+            cpu: {{.CpuRequest}}
+            memory: {{.MemoryRequest}}

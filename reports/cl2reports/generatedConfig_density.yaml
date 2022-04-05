@@ -1,0 +1,210 @@
+name: density
+automanagednamespaces: 0
+namespace:
+  number: 1
+  prefix: test-ho2jw3
+  deletestalenamespaces: false
+  deleteautomanagednamespaces: true
+  enableexistingnamespaces: false
+steps:
+- phases: []
+  measurements:
+  - method: APIResponsivenessPrometheus
+    params:
+      action: start
+    identifier: APIResponsivenessPrometheus
+    instances: []
+  - method: APIResponsivenessPrometheus
+    params:
+      action: start
+    identifier: APIResponsivenessPrometheusSimple
+    instances: []
+  - method: InClusterNetworkLatency
+    params:
+      action: start
+      checkProbesReadyTimeout: 15m
+      replicasPerProbe: 2
+    identifier: InClusterNetworkLatency
+    instances: []
+  - method: DnsLookupLatency
+    params:
+      action: start
+      checkProbesReadyTimeout: 15m
+      replicasPerProbe: 2
+    identifier: DnsLookupLatency
+    instances: []
+  - method: TestMetrics
+    params:
+      action: start
+      clusterOOMsIgnoredProcesses: null
+      clusterOOMsTrackerEnabled: true
+      enableRestartCountCheck: true
+      resourceConstraints: null
+      restartCountThresholdOverrides: ""
+      systemPodMetricsEnabled: true
+    identifier: TestMetrics
+    instances: []
+  module:
+    path: ""
+    params: {}
+  name: Starting measurements
+- phases: []
+  measurements:
+  - method: PodStartupLatency
+    params:
+      action: start
+      labelSelector: group = latency
+    identifier: PodStartupLatency
+    instances: []
+  - method: WaitForControlledPodsRunning
+    params:
+      action: start
+      apiVersion: apps/v1
+      kind: Deployment
+      labelSelector: group = latency
+      operationTimeout: 15m
+    identifier: WaitForRunningLatencyDeployments
+    instances: []
+  - method: SchedulingThroughput
+    params:
+      action: start
+      labelSelector: group = latency
+    identifier: SchedulingThroughput
+    instances: []
+  module:
+    path: ""
+    params: {}
+  name: Starting latency pod measurements
+- phases:
+  - namespacerange:
+      min: 1
+      max: 1
+      basename: null
+    replicaspernamespace: 1
+    tuningset: Tunned_QPS
+    objectbundle:
+    - basename: latency-deployment
+      objecttemplatepath: cl2-density-deployment.yaml
+      templatefillmap:
+        CpuRequest: 100m
+        Group: latency
+        MemoryRequest: 350M
+        Replicas: 30
+        UseHostNetwork: true
+      listunknownobjectoptions: null
+  measurements: []
+  module:
+    path: ""
+    params: {}
+  name: Creating latency pods
+- phases: []
+  measurements:
+  - method: WaitForControlledPodsRunning
+    params:
+      action: gather
+    identifier: WaitForRunningLatencyDeployments
+    instances: []
+  module:
+    path: ""
+    params: {}
+  name: Waiting for latency pods to be running
+- phases:
+  - namespacerange:
+      min: 1
+      max: 1
+      basename: null
+    replicaspernamespace: 0
+    tuningset: Tunned_QPS
+    objectbundle:
+    - basename: latency-deployment
+      objecttemplatepath: cl2-density-deployment.yaml
+      templatefillmap: {}
+      listunknownobjectoptions: null
+  measurements: []
+  module:
+    path: ""
+    params: {}
+  name: Deleting latency pods
+- phases: []
+  measurements:
+  - method: WaitForControlledPodsRunning
+    params:
+      action: gather
+    identifier: WaitForRunningLatencyDeployments
+    instances: []
+  module:
+    path: ""
+    params: {}
+  name: Waiting for latency pods to be deleted
+- phases: []
+  measurements:
+  - method: PodStartupLatency
+    params:
+      action: gather
+    identifier: PodStartupLatency
+    instances: []
+  - method: SchedulingThroughput
+    params:
+      action: gather
+      enableViolations: true
+      threshold: 0
+    identifier: SchedulingThroughput
+    instances: []
+  module:
+    path: ""
+    params: {}
+  name: Collecting pod startup latency
+- phases: []
+  measurements:
+  - method: APIResponsivenessPrometheus
+    params:
+      action: gather
+      allowedSlowCalls: 0
+      enableViolations: true
+      summaryName: APIResponsivenessPrometheus_simple
+      useSimpleLatencyQuery: true
+    identifier: APIResponsivenessPrometheusSimple
+    instances: []
+  - method: APIResponsivenessPrometheus
+    params:
+      action: gather
+      allowedSlowCalls: 0
+    identifier: APIResponsivenessPrometheus
+    instances: []
+  - method: InClusterNetworkLatency
+    params:
+      action: gather
+    identifier: InClusterNetworkLatency
+    instances: []
+  - method: DnsLookupLatency
+    params:
+      action: gather
+    identifier: DnsLookupLatency
+    instances: []
+  - method: TestMetrics
+    params:
+      action: gather
+      clusterOOMsTrackerEnabled: true
+      enableRestartCountCheck: true
+      restartCountThresholdOverrides: ""
+      systemPodMetricsEnabled: true
+    identifier: TestMetrics
+    instances: []
+  module:
+    path: ""
+    params: {}
+  name: Collecting measurements
+tuningsets:
+- name: Tunned_QPS
+  initialdelay: 0
+  qpsload: null
+  randomizedload: null
+  steppedload: null
+  timelimitedload: null
+  randomizedtimelimitedload: null
+  parallelismlimitedload: null
+  globalqpsload:
+    qps: 100000
+    burst: 100000
+chaosmonkey:
+  nodefailure: null

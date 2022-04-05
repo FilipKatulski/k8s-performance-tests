@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.Name}}
+  namespace: {{.Namespace}}
+spec:
+  replicas: {{.Replicas}}
+  selector:
+    matchLabels:
+       feature: exec
+  template:
+    metadata:
+       labels:
+         feature: exec
+    spec:
+      containers:
+      - name: agnhost
+        image: vmk-atds-registry-01.cern.ch/tbed/e2e-test-images/agnhost:2.32
+              # vm-tdq-registry.cern.ch/p1/e2e-test-images/agnhost:2.32

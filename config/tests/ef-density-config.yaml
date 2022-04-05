@@ -1,0 +1,93 @@
+##################################################################################################
+# Configuration options
+##################################################################################################
+{{$CL2_MULTIPLIER := DefaultParam .CL2_MULTIPLIER 100000000}} # Load multiplier
+{{$CL2_USE_HOST_NETWORK := DefaultParam .CL2_USE_HOST_NETWORK false}}
+{{$CL2_NUMBER_OF_DEPLOYMENTS := DefaultParam .CL2_NUMBER_OF_DEPLOYMENTS 1}}
+{{$CL2_PODS_PER_NODE := DefaultParam .CL2_PODS_PER_NODE 10}}
+
+##################################################################################################
+# defaults
+{{$defaultQPS := DefaultParam .defaultQPS 5}} # Default QPS
+{{$defaultBurst := DefaultParam .defaultBurst 10}} # Default Burst
+{{$container_image := DefaultParam .container_image "vmk-atds-registry-01.cern.ch/tbed/pause:3.4.1"}}  # "vm-tdq-registry.cern.ch/p1/pause:3.4.1"
+
+# Variables
+{{$totalNumberOfPods := MultiplyInt .Nodes $CL2_PODS_PER_NODE}}
+{{$podsPerDeployment := DivideInt $totalNumberOfPods $CL2_NUMBER_OF_DEPLOYMENTS}}
+{{$avg_qps := MultiplyInt $defaultQPS $CL2_MULTIPLIER}} # QPS
+{{$max_qps := MultiplyInt $defaultBurst $CL2_MULTIPLIER}} # Burst
+
+##################################################################################################
+# Tests configuration
+name: cern-ef-density
+automanagedNamespaces: 1
+tuningSets:
+- name: UniformQPS
+  # GlobalQPSLoad defines a uniform load with a given QPS.
+  # The rate limiter is shared across all phases using this tuning set.
+  globalQPSLoad:
+    qps: {{$avg_qps}}      # QPS defines desired average rate of actions.
+    burst: {{$max_qps}}   # Burst defines maxumim number of actions that can happen at the same time.
+
+#  # MaxLoad defines a maximum load without any rate limit.
+#  # This tuning set requires a patched version of clusterloader2
+#  # If we use this tuning set the $CL2_MULTIPLIER has no effect.
+#  maxLoad:
+#    # ParallelExecution select between serial and parallel actions execution (true or false).
+#    parallelExecution: false
+steps:
+- name: Starting Ef pod measurements
+  measurements:
+  - Identifier: EfPodStartupLatency
+    Method: PodStartupLatency
+    Params:
+      action: start
+      labelSelector: group = throughput
+  - Identifier: WaitForRunningEfDeployments
+    Method: WaitForControlledPodsRunning
+    Params:
+      action: start
+      apiVersion: apps/v1
+      kind: Deployment
+      labelSelector: group = throughput
+  - Identifier: SchedulingThroughput
+    Method: SchedulingThroughput
+    Params:
+      action: start
+      labelSelector: group = throughput
+
+- name: Creating Ef pods
+  phases:
+  - namespaceRange:
+      min: 1
+      max: 1
+    replicasPerNamespace: {{$CL2_NUMBER_OF_DEPLOYMENTS}} # The number of deployments
+    tuningSet: UniformQPS
+    objectBundle:
+    - basename: ef-deployment
+      objectTemplatePath: ef-density-deployment.yaml
+      templateFillMap:
+        Image: {{$container_image}}
+        Replicas: {{$podsPerDeployment}} # deployment's number of replicas 
+        UseHostNetwork: {{$CL2_USE_HOST_NETWORK}}
+        Group: throughput
+        CpuRequest: 1m
+        MemoryRequest: 10M
+
+- name: Collecting Ef pod measurements
+  measurements:
+  - Identifier: WaitForRunningEfDeployments
+    Method: WaitForControlledPodsRunning
+    Params:
+      action: gather
+- measurements:
+  - Identifier: EfPodStartupLatency
+    Method: PodStartupLatency
+    Params:
+      action: gather
+- measurements:
+  - Identifier: SchedulingThroughput
+    Method: SchedulingThroughput
+    Params:
+      action: gather

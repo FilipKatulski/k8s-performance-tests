@@ -1,0 +1,214 @@
+# ASSUMPTIONS:
+# - Underlying cluster should have 100+ nodes.
+# - Number of nodes should be divisible by NODES_PER_NAMESPACE (default 100).
+
+{{$CL2_USE_HOST_NETWORK := DefaultParam .CL2_USE_HOST_NETWORK true}}
+
+{{$PODS_PER_NODE := 5}}
+
+{{$QPS := 100000}}
+{{$BURST_QPS := 100000}}
+
+#Constants
+{{$DENSITY_RESOURCE_CONSTRAINTS_FILE := DefaultParam .DENSITY_RESOURCE_CONSTRAINTS_FILE ""}}
+# Cater for the case where the number of nodes is less than nodes per namespace. See https://github.com/kubernetes/perf-tests/issues/887
+{{$NODES_PER_NAMESPACE := .Nodes}}
+{{$DENSITY_TEST_THROUGHPUT := DefaultParam .DENSITY_TEST_THROUGHPUT 2000000}}
+{{$SCHEDULER_THROUGHPUT_THRESHOLD := DefaultParam .CL2_SCHEDULER_THROUGHPUT_THRESHOLD 0}}
+# LATENCY_POD_MEMORY and LATENCY_POD_CPU are calculated for 1-core 4GB node.
+# Increasing allocation of both memory and cpu by 10%
+# decreases the value of priority function in scheduler by one point.
+# This results in decreased probability of choosing the same node again.
+{{$LATENCY_POD_CPU := DefaultParam .LATENCY_POD_CPU 100}}
+{{$LATENCY_POD_MEMORY := DefaultParam .LATENCY_POD_MEMORY 350}}
+{{$MIN_LATENCY_PODS := DefaultParam .MIN_LATENCY_PODS 1}}
+{{$MIN_SATURATION_PODS_TIMEOUT := 180}}
+{{$ENABLE_CHAOSMONKEY := DefaultParam .ENABLE_CHAOSMONKEY false}}
+{{$ENABLE_SYSTEM_POD_METRICS:= DefaultParam .ENABLE_SYSTEM_POD_METRICS true}}
+{{$ENABLE_CLUSTER_OOMS_TRACKER := DefaultParam .CL2_ENABLE_CLUSTER_OOMS_TRACKER true}}
+{{$CLUSTER_OOMS_IGNORED_PROCESSES := DefaultParam .CL2_CLUSTER_OOMS_IGNORED_PROCESSES ""}}
+{{$USE_SIMPLE_LATENCY_QUERY := DefaultParam .USE_SIMPLE_LATENCY_QUERY false}}
+{{$ENABLE_RESTART_COUNT_CHECK := DefaultParam .ENABLE_RESTART_COUNT_CHECK true}}
+{{$RESTART_COUNT_THRESHOLD_OVERRIDES:= DefaultParam .RESTART_COUNT_THRESHOLD_OVERRIDES ""}}
+{{$ALLOWED_SLOW_API_CALLS := DefaultParam .CL2_ALLOWED_SLOW_API_CALLS 0}}
+{{$ENABLE_VIOLATIONS_FOR_SCHEDULING_THROUGHPUT := DefaultParam .CL2_ENABLE_VIOLATIONS_FOR_SCHEDULING_THROUGHPUT true}}
+#Variables
+{{$namespaces := DivideInt .Nodes $NODES_PER_NAMESPACE}}
+{{$podsPerNamespace := MultiplyInt $PODS_PER_NODE $NODES_PER_NAMESPACE}}
+{{$totalPods := MultiplyInt $podsPerNamespace $namespaces}}
+{{$latencyReplicas := $totalPods}}
+{{$totalLatencyPods := MultiplyInt $namespaces $latencyReplicas}}
+{{$saturationDeploymentTimeout := DivideFloat $totalPods $DENSITY_TEST_THROUGHPUT | AddInt $MIN_SATURATION_PODS_TIMEOUT}}
+# saturationDeploymentHardTimeout must be at least 20m to make sure that ~10m node
+# failure won't fail the test. See https://github.com/kubernetes/kubernetes/issues/73461#issuecomment-467338711
+{{$saturationDeploymentHardTimeout := MaxInt $saturationDeploymentTimeout 1200}}
+
+{{$saturationDeploymentSpec := DefaultParam .SATURATION_DEPLOYMENT_SPEC "cl2-density-deployment.yaml"}}
+{{$latencyDeploymentSpec := DefaultParam .LATENCY_DEPLOYMENT_SPEC "cl2-density-deployment.yaml"}}
+
+# Probe measurements shared parameter
+{{$PROBE_MEASUREMENTS_CHECK_PROBES_READY_TIMEOUT := DefaultParam .CL2_PROBE_MEASUREMENTS_CHECK_PROBES_READY_TIMEOUT "15m"}}
+
+name: density
+namespace:
+  number: {{$namespaces}}
+tuningSets:
+- name: Tunned_QPS
+  globalqpsload:
+    qps: {{$QPS}}
+    burst: {{$BURST_QPS}}
+
+{{if $ENABLE_CHAOSMONKEY}}
+chaosMonkey:
+  nodeFailure:
+    failureRate: 0.01
+    interval: 1m
+    jitterFactor: 10.0
+    simulatedDowntime: 10m
+{{end}}
+steps:
+- name: Starting measurements
+  measurements:
+  - Identifier: APIResponsivenessPrometheus
+    Method: APIResponsivenessPrometheus
+    Params:
+      action: start
+  - Identifier: APIResponsivenessPrometheusSimple
+    Method: APIResponsivenessPrometheus
+    Params:
+      action: start
+  # TODO(oxddr): figure out how many probers to run in function of cluster
+  - Identifier: InClusterNetworkLatency
+    Method: InClusterNetworkLatency
+    Params:
+      action: start
+      checkProbesReadyTimeout: {{$PROBE_MEASUREMENTS_CHECK_PROBES_READY_TIMEOUT}}
+      replicasPerProbe: {{AddInt 2 (DivideInt .Nodes 100)}}
+  - Identifier: DnsLookupLatency
+    Method: DnsLookupLatency
+    Params:
+      action: start
+      checkProbesReadyTimeout: {{$PROBE_MEASUREMENTS_CHECK_PROBES_READY_TIMEOUT}}
+      replicasPerProbe: {{AddInt 2 (DivideInt .Nodes 100)}}
+  - Identifier: TestMetrics
+    Method: TestMetrics
+    Params:
+      action: start
+      resourceConstraints: {{$DENSITY_RESOURCE_CONSTRAINTS_FILE}}
+      systemPodMetricsEnabled: {{$ENABLE_SYSTEM_POD_METRICS}}
+      clusterOOMsTrackerEnabled: {{$ENABLE_CLUSTER_OOMS_TRACKER}}
+      clusterOOMsIgnoredProcesses: {{$CLUSTER_OOMS_IGNORED_PROCESSES}}
+      restartCountThresholdOverrides: {{YamlQuote $RESTART_COUNT_THRESHOLD_OVERRIDES 4}}
+      enableRestartCountCheck: {{$ENABLE_RESTART_COUNT_CHECK}}
+
+- name: Starting latency pod measurements
+  measurements:
+  - Identifier: PodStartupLatency
+    Method: PodStartupLatency
+    Params:
+      action: start
+      labelSelector: group = latency
+  - Identifier: WaitForRunningLatencyDeployments
+    Method: WaitForControlledPodsRunning
+    Params:
+      action: start
+      apiVersion: apps/v1
+      kind: Deployment
+      labelSelector: group = latency
+      operationTimeout: 15m
+  - Identifier: SchedulingThroughput
+    Method: SchedulingThroughput
+    Params:
+      action: start
+      labelSelector: group = latency
+
+- name: Creating latency pods
+  phases:
+  - namespaceRange:
+      min: 1
+      max: {{$namespaces}}
+#    replicasPerNamespace: {{$latencyReplicas}}
+    replicasPerNamespace: 1
+    tuningSet: Tunned_QPS
+    objectBundle:
+    - basename: latency-deployment
+      objectTemplatePath: {{$latencyDeploymentSpec}}
+      templateFillMap:
+#        Replicas: 1
+        Replicas: {{$latencyReplicas}}
+        UseHostNetwork: {{$CL2_USE_HOST_NETWORK}}
+        Group: latency
+        CpuRequest: {{$LATENCY_POD_CPU}}m
+        MemoryRequest: {{$LATENCY_POD_MEMORY}}M
+
+- name: Waiting for latency pods to be running
+  measurements:
+  - Identifier: WaitForRunningLatencyDeployments
+    Method: WaitForControlledPodsRunning
+    Params:
+      action: gather
+
+- name: Deleting latency pods
+  phases:
+  - namespaceRange:
+      min: 1
+      max: {{$namespaces}}
+    replicasPerNamespace: 0
+    tuningSet: Tunned_QPS
+    objectBundle:
+    - basename: latency-deployment
+      objectTemplatePath: {{$latencyDeploymentSpec}}
+
+- name: Waiting for latency pods to be deleted
+  measurements:
+  - Identifier: WaitForRunningLatencyDeployments
+    Method: WaitForControlledPodsRunning
+    Params:
+      action: gather
+
+- name: Collecting pod startup latency
+  measurements:
+  - Identifier: PodStartupLatency
+    Method: PodStartupLatency
+    Params:
+      action: gather
+  - Identifier: SchedulingThroughput
+    Method: SchedulingThroughput
+    Params:
+      action: gather
+      enableViolations: {{$ENABLE_VIOLATIONS_FOR_SCHEDULING_THROUGHPUT}}
+      threshold: {{$SCHEDULER_THROUGHPUT_THRESHOLD}}
+
+- name: Collecting measurements
+  measurements:
+  - Identifier: APIResponsivenessPrometheusSimple
+    Method: APIResponsivenessPrometheus
+    Params:
+      action: gather
+      enableViolations: true
+      useSimpleLatencyQuery: true
+      summaryName: APIResponsivenessPrometheus_simple
+      allowedSlowCalls: {{$ALLOWED_SLOW_API_CALLS}}
+  {{if not $USE_SIMPLE_LATENCY_QUERY}}
+  - Identifier: APIResponsivenessPrometheus
+    Method: APIResponsivenessPrometheus
+    Params:
+      action: gather
+      allowedSlowCalls: {{$ALLOWED_SLOW_API_CALLS}}
+  {{end}}
+  - Identifier: InClusterNetworkLatency
+    Method: InClusterNetworkLatency
+    Params:
+      action: gather
+  - Identifier: DnsLookupLatency
+    Method: DnsLookupLatency
+    Params:
+      action: gather
+  - Identifier: TestMetrics
+    Method: TestMetrics
+    Params:
+      action: gather
+      systemPodMetricsEnabled: {{$ENABLE_SYSTEM_POD_METRICS}}
+      clusterOOMsTrackerEnabled: {{$ENABLE_CLUSTER_OOMS_TRACKER}}
+      restartCountThresholdOverrides: {{YamlQuote $RESTART_COUNT_THRESHOLD_OVERRIDES 4}}
+      enableRestartCountCheck: {{$ENABLE_RESTART_COUNT_CHECK}}
