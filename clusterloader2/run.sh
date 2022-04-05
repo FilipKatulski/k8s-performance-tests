@@ -6,8 +6,8 @@ ctrl_qps=800_800
 
 tag="${sched_qps}_s_${ctrl_qps}_c_${workers}_nodes_${replicas}_pods_typha${extra_flag}"
 
-outdir="$HOME/public/k8s-performance-test"
-reportdir="reports"
+outdir="$HOME/public/k8s-performance-test/reports"
+reportdir="report"
 
 mkdir -p "$outdir/$tag"
 
