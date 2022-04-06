@@ -2,7 +2,7 @@ name: density
 automanagednamespaces: 0
 namespace:
   number: 1
-  prefix: test-mxznyf
+  prefix: test-ocs96p
   deletestalenamespaces: false
   deleteautomanagednamespaces: true
   enableexistingnamespaces: false
