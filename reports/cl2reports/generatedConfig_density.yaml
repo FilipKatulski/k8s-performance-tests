@@ -2,7 +2,7 @@ name: density
 automanagednamespaces: 0
 namespace:
   number: 1
-  prefix: test-ocs96p
+  prefix: test-nbnddr
   deletestalenamespaces: false
   deleteautomanagednamespaces: true
   enableexistingnamespaces: false
