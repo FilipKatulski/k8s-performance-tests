@@ -205,6 +205,7 @@ func (p *podStartupLatencyMeasurement) gather(c clientset.Interface, identifier 
 	var summaries []measurement.Summary
 	var err error
 	for _, check := range checks {
+		fmt.Println(check)
 		transitions := podStartupTransitionsWithThreshold(p.threshold)
 		podStartupLatency := p.podStartupEntries.CalculateTransitionsLatency(transitions, check.filter)
 

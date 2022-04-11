@@ -103,7 +103,11 @@ func (o *ObjectTransitionTimes) CalculateTransitionsLatency(t map[string]Transit
 		klog.V(0).Infof("%s", err)
 	}
 	//#############
+	fmt.Println("a")
+	fmt.Println(t)
 	for name, transition := range t {
+		fmt.Println("NAME", name)
+		fmt.Println("TRANSITION", transition)
 		lag := make([]LatencyData, 0, len(o.times))
 		for key, transitionTimes := range o.times {
 			if !filter(key) {
@@ -131,6 +135,7 @@ func (o *ObjectTransitionTimes) CalculateTransitionsLatency(t map[string]Transit
 			//#############
 			lag = append(lag, latencyData{key: key, latency: latencyTime})
 			s := fmt.Sprintf("%s, %s, %s, %v, %v, %v, %v, %v\n", name, transition, key, fromPhaseTime, toPhaseTime, latencyTime.Milliseconds(), fromPhaseTime.Unix(), toPhaseTime.Unix())
+			// fmt.Println(s)
 			_, err = f_timeline.WriteString(s)
 			if err != nil {
 				klog.V(0).Infof("%s", err)

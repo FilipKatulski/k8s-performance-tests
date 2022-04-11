@@ -2,7 +2,7 @@ name: density
 automanagednamespaces: 0
 namespace:
   number: 1
-  prefix: test-nbnddr
+  prefix: test-e738d4
   deletestalenamespaces: false
   deleteautomanagednamespaces: true
   enableexistingnamespaces: false
