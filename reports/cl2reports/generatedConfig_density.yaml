@@ -2,7 +2,7 @@ name: density
 automanagednamespaces: 0
 namespace:
   number: 1
-  prefix: test-e738d4
+  prefix: test-hrlvz3
   deletestalenamespaces: false
   deleteautomanagednamespaces: true
   enableexistingnamespaces: false
