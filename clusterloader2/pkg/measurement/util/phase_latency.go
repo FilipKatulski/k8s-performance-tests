@@ -23,7 +23,22 @@ import (
 	"sync"
 	"time"
 
+	// --------
+	"context"
+	"flag"
+	"path/filepath"
+
+	// --------
+
 	"k8s.io/klog"
+
+	// --------
+
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/tools/clientcmd"
+	"k8s.io/client-go/util/homedir"
+	// --------
 )
 
 // Transition describe transition between two phases.
@@ -92,6 +107,40 @@ type KeyFilterFunc func(string) bool
 // MatchAll implements KeyFilterFunc and matches every element.
 func MatchAll(_ string) bool { return true }
 
+//---------------
+// Get Node name of the Pod.
+func GetNodenameByPodname(Podname string) string {
+	var kubeconfig *string
+	if home := homedir.HomeDir(); home != "" {
+		kubeconfig = flag.String("kubeconfig", filepath.Join(home, ".kube", "config"), "(optional) absolute path to the kubeconfig file")
+	} else {
+		kubeconfig = flag.String("kubeconfig", "", "absolute path to the kubeconfig file")
+	}
+	flag.Parse()
+
+	// use the current context in kubeconfig
+	config, err := clientcmd.BuildConfigFromFlags("", *kubeconfig)
+	if err != nil {
+		klog.V(0).Infof("%s", err)
+	}
+
+	// create the clientset
+	clientset, err := kubernetes.NewForConfig(config)
+	if err != nil {
+		klog.V(0).Infof("%s", err)
+	}
+
+	pod, err := clientset.CoreV1().Pods("cluster-loader").Get(context.TODO(), Podname, metav1.GetOptions{})
+	if err != nil {
+		klog.V(0).Infof("%s", err)
+	}
+	Nodename := pod.Spec.NodeName
+	fmt.Printf("Pod: %s, Node: %s", Podname, Nodename)
+	return Nodename
+}
+
+//---------------
+
 // CalculateTransitionsLatency returns a latency map for given transitions.
 func (o *ObjectTransitionTimes) CalculateTransitionsLatency(t map[string]Transition, filter KeyFilterFunc) map[string]*LatencyMetric {
 	o.lock.Lock()
@@ -103,8 +152,8 @@ func (o *ObjectTransitionTimes) CalculateTransitionsLatency(t map[string]Transit
 		klog.V(0).Infof("%s", err)
 	}
 	//#############
-	fmt.Println("a")
-	fmt.Println(t)
+	fmt.Println("a") //
+	fmt.Println(t)   //
 	for name, transition := range t {
 		fmt.Println("NAME", name)
 		fmt.Println("TRANSITION", transition)
@@ -132,6 +181,12 @@ func (o *ObjectTransitionTimes) CalculateTransitionsLatency(t map[string]Transit
 			if latencyTime < 0 {
 				latencyTime = 0
 			}
+
+			//-------------
+			nodenam := GetNodenameByPodname(key)
+			fmt.Print(nodenam)
+			//-------------
+
 			//#############
 			lag = append(lag, latencyData{key: key, latency: latencyTime})
 			s := fmt.Sprintf("%s, %s, %s, %v, %v, %v, %v, %v\n", name, transition, key, fromPhaseTime, toPhaseTime, latencyTime.Milliseconds(), fromPhaseTime.Unix(), toPhaseTime.Unix())
