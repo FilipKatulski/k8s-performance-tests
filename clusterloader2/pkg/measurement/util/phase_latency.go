@@ -17,16 +17,17 @@ limitations under the License.
 package util
 
 import (
+	"flag"
 	"fmt"
 	"os"
+	"path/filepath"
 	"sort"
 	"sync"
 	"time"
 
 	// --------
 	"context"
-	"flag"
-	"path/filepath"
+	"reflect"
 
 	// --------
 
@@ -38,6 +39,7 @@ import (
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/client-go/util/homedir"
+	"k8s.io/perf-tests/clusterloader2/pkg/config"
 	// --------
 )
 
@@ -110,13 +112,27 @@ func MatchAll(_ string) bool { return true }
 //---------------
 // Get Node name of the Pod.
 func GetNodenameByPodname(Podname string) string {
+
+	var clusterLoaderConfig config.ClusterLoaderConfig
 	var kubeconfig *string
+
+	//kubecfg := clusterLoaderConfig.ClusterConfig.KubeConfigPath
+	//fmt.Println("Kubecfg: ")
+	//fmt.Println(kubecfg)
+
+	kubeconfigflag := flag.Lookup("kubeconfig")
+	// #TODO
+	fmt.Println("kubeconfigflag")
+	fmt.Println(reflect.TypeOf(kubeconfigflag))
+	fmt.Println("type: ")
+	fmt.Println(kubeconfigflag)
+	fmt.Println("end of kubeconfigflag")
+
 	if home := homedir.HomeDir(); home != "" {
 		kubeconfig = flag.String("kubeconfig", filepath.Join(home, ".kube", "config"), "(optional) absolute path to the kubeconfig file")
 	} else {
 		kubeconfig = flag.String("kubeconfig", "", "absolute path to the kubeconfig file")
 	}
-	flag.Parse()
 
 	// use the current context in kubeconfig
 	config, err := clientcmd.BuildConfigFromFlags("", *kubeconfig)

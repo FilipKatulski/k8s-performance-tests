@@ -2,7 +2,7 @@ name: density
 automanagednamespaces: 0
 namespace:
   number: 1
-  prefix: test-42k2ya
+  prefix: test-a1fnct
   deletestalenamespaces: false
   deleteautomanagednamespaces: true
   enableexistingnamespaces: false
