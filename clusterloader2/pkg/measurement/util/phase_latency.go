@@ -39,7 +39,6 @@ import (
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/client-go/util/homedir"
-	"k8s.io/perf-tests/clusterloader2/pkg/config"
 	// --------
 )
 
@@ -113,7 +112,7 @@ func MatchAll(_ string) bool { return true }
 // Get Node name of the Pod.
 func GetNodenameByPodname(Podname string) string {
 
-	var clusterLoaderConfig config.ClusterLoaderConfig
+	//var clusterLoaderConfig config.ClusterLoaderConfig
 	var kubeconfig *string
 
 	//kubecfg := clusterLoaderConfig.ClusterConfig.KubeConfigPath
@@ -123,8 +122,9 @@ func GetNodenameByPodname(Podname string) string {
 	kubeconfigflag := flag.Lookup("kubeconfig")
 	// #TODO
 	fmt.Println("kubeconfigflag")
-	fmt.Println(reflect.TypeOf(kubeconfigflag))
 	fmt.Println("type: ")
+	fmt.Println(reflect.TypeOf(kubeconfigflag))
+
 	fmt.Println(kubeconfigflag)
 	fmt.Println("end of kubeconfigflag")
 
@@ -200,7 +200,7 @@ func (o *ObjectTransitionTimes) CalculateTransitionsLatency(t map[string]Transit
 
 			//-------------
 			nodenam := GetNodenameByPodname(key)
-			fmt.Print(nodenam)
+			fmt.Println(nodenam)
 			//-------------
 
 			//#############
