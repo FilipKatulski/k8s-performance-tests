@@ -125,14 +125,18 @@ func GetNodenameByPodname(Podname string) string {
 	fmt.Println("type: ")
 	fmt.Println(reflect.TypeOf(kubeconfigflag))
 
-	fmt.Println(kubeconfigflag)
+	fmt.Println("kubeconfigflag: ")
+	fmt.Println(kubeconfigflag.Name, kubeconfigflag.Value, kubeconfigflag.Usage)
 	fmt.Println("end of kubeconfigflag")
 
 	if home := homedir.HomeDir(); home != "" {
+		fmt.Println("A")
 		kubeconfig = flag.String("kubeconfig", filepath.Join(home, ".kube", "config"), "(optional) absolute path to the kubeconfig file")
 	} else {
+		fmt.Println("B")
 		kubeconfig = flag.String("kubeconfig", "", "absolute path to the kubeconfig file")
 	}
+	fmt.Println("C")
 
 	// use the current context in kubeconfig
 	config, err := clientcmd.BuildConfigFromFlags("", *kubeconfig)
@@ -168,8 +172,7 @@ func (o *ObjectTransitionTimes) CalculateTransitionsLatency(t map[string]Transit
 		klog.V(0).Infof("%s", err)
 	}
 	//#############
-	fmt.Println("a") //
-	fmt.Println(t)   //
+
 	for name, transition := range t {
 		fmt.Println("NAME", name)
 		fmt.Println("TRANSITION", transition)
@@ -199,8 +202,8 @@ func (o *ObjectTransitionTimes) CalculateTransitionsLatency(t map[string]Transit
 			}
 
 			//-------------
-			nodenam := GetNodenameByPodname(key)
-			fmt.Println(nodenam)
+			//nodenam := GetNodenameByPodname(key)
+			//fmt.Println(nodenam)
 			//-------------
 
 			//#############
