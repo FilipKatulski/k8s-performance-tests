@@ -59,7 +59,7 @@ sleep 10;
 done
 
 echo ""
-echo "Removing all remaining elements in cluster-loader namespace: "
+echo "Removing cluster-loader namespace: "
 
 kubectl delete namespace cluster-loader
 kubectl get all -o wide -n cluster-loader

@@ -19,6 +19,7 @@ package slos
 import (
 	"context"
 	"fmt"
+	"reflect"
 	"time"
 
 	corev1 "k8s.io/api/core/v1"
@@ -111,7 +112,7 @@ func (p *podStartupLatencyMeasurement) String() string {
 
 func (p *podStartupLatencyMeasurement) start(c clientset.Interface) error {
 	if p.isRunning {
-		klog.V(2).Infof("%s: pod startup latancy measurement already running", p)
+		klog.V(2).Infof("%s: pod startup latency measurement already running", p)
 		return nil
 	}
 	klog.V(2).Infof("%s: starting pod startup latency measurement...", p)
@@ -181,6 +182,25 @@ type podStartupLatencyCheck struct {
 
 func (p *podStartupLatencyMeasurement) gather(c clientset.Interface, identifier string) ([]measurement.Summary, error) {
 	klog.V(2).Infof("%s: gathering pod startup latency measurement...", p)
+	//------------------
+	//TODO
+	fmt.Println("!!!!!!!!!!AAAAAAAAAAA", p)
+
+	// we got client information, need to get node info and pass it further.
+
+	pods, er := c.CoreV1().Pods(p.selector.Namespace).List(context.TODO(), metav1.ListOptions{})
+	if er != nil {
+		klog.V(0).Infof("%s", er)
+	}
+
+	fmt.Println("Type of 'pods': ")
+	fmt.Println(reflect.TypeOf(pods))
+	for ind := range pods.Items {
+		fmt.Println(pods.Items[ind].Spec.NodeName, pods.Items[ind].Name)
+	}
+
+	//------------------
+
 	if !p.isRunning {
 		return nil, fmt.Errorf("metric %s has not been started", podStartupLatencyMeasurementName)
 	}

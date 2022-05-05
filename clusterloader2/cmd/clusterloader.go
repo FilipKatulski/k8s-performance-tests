@@ -47,10 +47,7 @@ import (
 	_ "k8s.io/perf-tests/clusterloader2/pkg/measurement/common/network"
 	_ "k8s.io/perf-tests/clusterloader2/pkg/measurement/common/probes"
 	_ "k8s.io/perf-tests/clusterloader2/pkg/measurement/common/slos"
-
 	//-----------------
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/perf-tests/clusterloader2/pkg/framework/client"
 	//-----------------
 )
 
@@ -267,6 +264,10 @@ func main() {
 		klog.Exitf("Client creation error: %v", err)
 	}
 
+	//-----------------
+	fmt.Println(mclient)
+
+	//-----------------
 	if err = completeConfig(mclient); err != nil {
 		klog.Exitf("Config completing error: %v", err)
 	}
@@ -357,7 +358,19 @@ func main() {
 	for i := range contexts {
 		runSingleTest(contexts[i])
 	}
-
+	/*
+		//-----------------
+		c, err := framework.LoadClientset()
+		if err != nil {
+			klog.Fatal("Error loading client: ", err)
+		}
+		pods_listed, err := client.ListPodsWithOptions(c, "cluster-loader", metav1.ListOptions{})
+		if err != nil {
+			klog.V(0).Infof("%s", err)
+		}
+		fmt.Println(pods_listed)
+		//-----------------
+	*/
 	testReporter.EndTestSuite()
 
 	if clusterLoaderConfig.PrometheusConfig.EnableServer && clusterLoaderConfig.PrometheusConfig.TearDownServer {
@@ -373,17 +386,7 @@ func main() {
 	if failedTestItems := testReporter.GetNumberOfFailedTestItems(); failedTestItems > 0 {
 		klog.Exitf("%d tests have failed!", failedTestItems)
 	}
-	//-----------------
-	c, err := framework.LoadClientset()
-	if err != nil {
-		klog.Fatal("Error loading client: ", err)
-	}
-	pods_listed, err := client.ListPodsWithOptions(c, "cluster-loader", metav1.ListOptions{})
-	if err != nil {
-		klog.V(0).Infof("%s", err)
-	}
-	fmt.Println(pods_listed)
-	//-----------------
+
 }
 
 //-----------------
