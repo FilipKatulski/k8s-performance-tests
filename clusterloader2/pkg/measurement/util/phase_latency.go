@@ -17,29 +17,13 @@ limitations under the License.
 package util
 
 import (
-	"flag"
 	"fmt"
 	"os"
-	"path/filepath"
 	"sort"
 	"sync"
 	"time"
 
-	// --------
-	"context"
-	"reflect"
-
-	// --------
-
 	"k8s.io/klog"
-
-	// --------
-
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/client-go/kubernetes"
-	"k8s.io/client-go/tools/clientcmd"
-	"k8s.io/client-go/util/homedir"
-	// --------
 )
 
 // Transition describe transition between two phases.
@@ -109,6 +93,7 @@ type KeyFilterFunc func(string) bool
 func MatchAll(_ string) bool { return true }
 
 //---------------
+/*
 // Get Node name of the Pod.
 func GetNodenameByPodname(Podname string) string {
 
@@ -158,7 +143,7 @@ func GetNodenameByPodname(Podname string) string {
 	fmt.Printf("Pod: %s, Node: %s", Podname, Nodename)
 	return Nodename
 }
-
+*/
 //---------------
 
 // CalculateTransitionsLatency returns a latency map for given transitions.
@@ -173,11 +158,19 @@ func (o *ObjectTransitionTimes) CalculateTransitionsLatency(t map[string]Transit
 	}
 	//#############
 
+	//-------------
+	//fmt.Println("o.times: ", o.times)
+	//-------------
 	for name, transition := range t {
+		//---------------
 		fmt.Println("NAME", name)
 		fmt.Println("TRANSITION", transition)
+		//---------------
 		lag := make([]LatencyData, 0, len(o.times))
 		for key, transitionTimes := range o.times {
+			//---------------
+			fmt.Println("key: ", key, "|", "tranisitionTimes: ", transitionTimes)
+			//---------------
 			if !filter(key) {
 				klog.V(4).Infof("%s: filter doesn match key %s", o.name, key)
 				continue

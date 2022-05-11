@@ -184,20 +184,23 @@ func (p *podStartupLatencyMeasurement) gather(c clientset.Interface, identifier 
 	klog.V(2).Infof("%s: gathering pod startup latency measurement...", p)
 	//------------------
 	//TODO
-	fmt.Println("!!!!!!!!!!AAAAAAAAAAA", p)
-
 	// we got client information, need to get node info and pass it further.
 
-	pods, er := c.CoreV1().Pods(p.selector.Namespace).List(context.TODO(), metav1.ListOptions{})
+	pods, er := c.CoreV1().Pods("cluster-loader").List(context.TODO(), metav1.ListOptions{})
 	if er != nil {
 		klog.V(0).Infof("%s", er)
 	}
 
 	fmt.Println("Type of 'pods': ")
 	fmt.Println(reflect.TypeOf(pods))
+
 	for ind := range pods.Items {
-		fmt.Println(pods.Items[ind].Spec.NodeName, pods.Items[ind].Name)
+		fmt.Println(pods.Items[ind].Spec.NodeName, "|", pods.Items[ind].Name)
 	}
+
+	fmt.Println("p.selector: ", p.selector)
+	fmt.Println("p.podStartupEntries: ", p.podStartupEntries)
+	fmt.Println("p.podMetadata: ", p.podMetadata)
 
 	//------------------
 
@@ -225,7 +228,6 @@ func (p *podStartupLatencyMeasurement) gather(c clientset.Interface, identifier 
 	var summaries []measurement.Summary
 	var err error
 	for _, check := range checks {
-		fmt.Println(check)
 		transitions := podStartupTransitionsWithThreshold(p.threshold)
 		podStartupLatency := p.podStartupEntries.CalculateTransitionsLatency(transitions, check.filter)
 

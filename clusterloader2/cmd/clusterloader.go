@@ -47,8 +47,6 @@ import (
 	_ "k8s.io/perf-tests/clusterloader2/pkg/measurement/common/network"
 	_ "k8s.io/perf-tests/clusterloader2/pkg/measurement/common/probes"
 	_ "k8s.io/perf-tests/clusterloader2/pkg/measurement/common/slos"
-	//-----------------
-	//-----------------
 )
 
 const (
@@ -264,10 +262,6 @@ func main() {
 		klog.Exitf("Client creation error: %v", err)
 	}
 
-	//-----------------
-	fmt.Println(mclient)
-
-	//-----------------
 	if err = completeConfig(mclient); err != nil {
 		klog.Exitf("Config completing error: %v", err)
 	}
@@ -358,19 +352,7 @@ func main() {
 	for i := range contexts {
 		runSingleTest(contexts[i])
 	}
-	/*
-		//-----------------
-		c, err := framework.LoadClientset()
-		if err != nil {
-			klog.Fatal("Error loading client: ", err)
-		}
-		pods_listed, err := client.ListPodsWithOptions(c, "cluster-loader", metav1.ListOptions{})
-		if err != nil {
-			klog.V(0).Infof("%s", err)
-		}
-		fmt.Println(pods_listed)
-		//-----------------
-	*/
+
 	testReporter.EndTestSuite()
 
 	if clusterLoaderConfig.PrometheusConfig.EnableServer && clusterLoaderConfig.PrometheusConfig.TearDownServer {
@@ -388,38 +370,6 @@ func main() {
 	}
 
 }
-
-//-----------------
-/*
-func listNodes() {
-	var kubeconfig *string
-	if home := homedir.HomeDir(); home != "" {
-		kubeconfig = flag.String("kubeconfig", filepath.Join(home, ".kube", "config"), "(optional) absolute path to the kubeconfig file")
-	} else {
-		kubeconfig = flag.String("kubeconfig", "", "absolute path to the kubeconfig file")
-	}
-	flag.Parse()
-
-	// use the current context in kubeconfig
-	config, err := clientcmd.BuildConfigFromFlags("", *kubeconfig)
-	if err != nil {
-		klog.V(0).Infof("%s", err)
-	}
-
-	// create the clientset
-	clientset, err := kubernetes.NewForConfig(config)
-	if err != nil {
-		klog.V(0).Infof("%s", err)
-	}
-
-	nodeList, err := clientset.CoreV1().Nodes().List(context.Background(), metav1.ListOptions{})
-	if err != nil {
-		klog.V(0).Infof("%s", err)
-	}
-
-}
-*/
-//-----------------
 
 func runSingleTest(ctx test.Context) {
 	testID := getTestID(ctx.GetTestScenario())
