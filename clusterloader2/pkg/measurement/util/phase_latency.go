@@ -92,62 +92,8 @@ type KeyFilterFunc func(string) bool
 // MatchAll implements KeyFilterFunc and matches every element.
 func MatchAll(_ string) bool { return true }
 
-//---------------
-/*
-// Get Node name of the Pod.
-func GetNodenameByPodname(Podname string) string {
-
-	//var clusterLoaderConfig config.ClusterLoaderConfig
-	var kubeconfig *string
-
-	//kubecfg := clusterLoaderConfig.ClusterConfig.KubeConfigPath
-	//fmt.Println("Kubecfg: ")
-	//fmt.Println(kubecfg)
-
-	kubeconfigflag := flag.Lookup("kubeconfig")
-	// #TODO
-	fmt.Println("kubeconfigflag")
-	fmt.Println("type: ")
-	fmt.Println(reflect.TypeOf(kubeconfigflag))
-
-	fmt.Println("kubeconfigflag: ")
-	fmt.Println(kubeconfigflag.Name, kubeconfigflag.Value, kubeconfigflag.Usage)
-	fmt.Println("end of kubeconfigflag")
-
-	if home := homedir.HomeDir(); home != "" {
-		fmt.Println("A")
-		kubeconfig = flag.String("kubeconfig", filepath.Join(home, ".kube", "config"), "(optional) absolute path to the kubeconfig file")
-	} else {
-		fmt.Println("B")
-		kubeconfig = flag.String("kubeconfig", "", "absolute path to the kubeconfig file")
-	}
-	fmt.Println("C")
-
-	// use the current context in kubeconfig
-	config, err := clientcmd.BuildConfigFromFlags("", *kubeconfig)
-	if err != nil {
-		klog.V(0).Infof("%s", err)
-	}
-
-	// create the clientset
-	clientset, err := kubernetes.NewForConfig(config)
-	if err != nil {
-		klog.V(0).Infof("%s", err)
-	}
-
-	pod, err := clientset.CoreV1().Pods("cluster-loader").Get(context.TODO(), Podname, metav1.GetOptions{})
-	if err != nil {
-		klog.V(0).Infof("%s", err)
-	}
-	Nodename := pod.Spec.NodeName
-	fmt.Printf("Pod: %s, Node: %s", Podname, Nodename)
-	return Nodename
-}
-*/
-//---------------
-
 // CalculateTransitionsLatency returns a latency map for given transitions.
-func (o *ObjectTransitionTimes) CalculateTransitionsLatency(t map[string]Transition, filter KeyFilterFunc) map[string]*LatencyMetric {
+func (o *ObjectTransitionTimes) CalculateTransitionsLatency(t map[string]Transition, filter KeyFilterFunc, filter_name string) map[string]*LatencyMetric {
 	o.lock.Lock()
 	defer o.lock.Unlock()
 	metric := make(map[string]*LatencyMetric)
@@ -201,8 +147,8 @@ func (o *ObjectTransitionTimes) CalculateTransitionsLatency(t map[string]Transit
 
 			//#############
 			lag = append(lag, latencyData{key: key, latency: latencyTime})
-			s := fmt.Sprintf("%s, %s, %s, %v, %v, %v, %v, %v\n", name, transition, key, fromPhaseTime, toPhaseTime, latencyTime.Milliseconds(), fromPhaseTime.Unix(), toPhaseTime.Unix())
-			// fmt.Println(s)
+			s := fmt.Sprintf("%s, %s, %s, %s %v, %v, %v, %v, %v\n", name, transition, key, filter_name, fromPhaseTime, toPhaseTime, latencyTime.Milliseconds(), fromPhaseTime.Unix(), toPhaseTime.Unix())
+			fmt.Println(s)
 			_, err = f_timeline.WriteString(s)
 			if err != nil {
 				klog.V(0).Infof("%s", err)

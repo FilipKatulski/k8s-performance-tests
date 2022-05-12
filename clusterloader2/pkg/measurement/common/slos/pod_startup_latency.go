@@ -216,7 +216,7 @@ func (p *podStartupLatencyMeasurement) gather(c clientset.Interface, identifier 
 
 	checks := []podStartupLatencyCheck{
 		{
-			namePrefix: "",
+			namePrefix: "MatchAll",
 			filter:     measurementutil.MatchAll,
 		},
 		{
@@ -229,7 +229,7 @@ func (p *podStartupLatencyMeasurement) gather(c clientset.Interface, identifier 
 	var err error
 	for _, check := range checks {
 		transitions := podStartupTransitionsWithThreshold(p.threshold)
-		podStartupLatency := p.podStartupEntries.CalculateTransitionsLatency(transitions, check.filter)
+		podStartupLatency := p.podStartupEntries.CalculateTransitionsLatency(transitions, check.filter, check.namePrefix)
 
 		if slosErr := podStartupLatency["pod_startup"].VerifyThreshold(p.threshold); slosErr != nil {
 			err = errors.NewMetricViolationError("pod startup", slosErr.Error())
