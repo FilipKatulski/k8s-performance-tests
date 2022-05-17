@@ -19,7 +19,6 @@ package slos
 import (
 	"context"
 	"fmt"
-	"reflect"
 	"time"
 
 	corev1 "k8s.io/api/core/v1"
@@ -185,14 +184,12 @@ func (p *podStartupLatencyMeasurement) gather(c clientset.Interface, identifier 
 	//------------------
 	//TODO
 	// we got client information, need to get node info and pass it further.
+	cluster_loader_namespace := "cluster-loader"
 
-	pods, er := c.CoreV1().Pods("cluster-loader").List(context.TODO(), metav1.ListOptions{})
+	pods, er := c.CoreV1().Pods(cluster_loader_namespace).List(context.TODO(), metav1.ListOptions{})
 	if er != nil {
 		klog.V(0).Infof("%s", er)
 	}
-
-	fmt.Println("Type of 'pods': ")
-	fmt.Println(reflect.TypeOf(pods))
 
 	for ind := range pods.Items {
 		fmt.Println(pods.Items[ind].Spec.NodeName, "|", pods.Items[ind].Name)
@@ -201,6 +198,8 @@ func (p *podStartupLatencyMeasurement) gather(c clientset.Interface, identifier 
 	fmt.Println("p.selector: ", p.selector)
 	fmt.Println("p.podStartupEntries: ", p.podStartupEntries)
 	fmt.Println("p.podMetadata: ", p.podMetadata)
+	fmt.Println("")
+	fmt.Println("")
 
 	//------------------
 

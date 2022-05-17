@@ -237,7 +237,7 @@ func printTestResult(name, status, errors string) {
 func main() {
 	//###########################################################################
 	f_timeline, _ := os.Create("timeline.csv")
-	s := fmt.Sprintf("Name,Transition,Deployment_instance_key,filter,from,to,diff,from_unix,to_unix\n")
+	s := fmt.Sprintf("Name,Transition,Deployment_instance_key,pod_state_filter,from,to,diff,from_unix,to_unix\n")
 	_, _ = f_timeline.WriteString(s)
 	f_timeline.Close()
 	//###########################################################################

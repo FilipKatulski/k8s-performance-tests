@@ -20,6 +20,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"time"
+
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/fields"
@@ -34,7 +36,6 @@ import (
 	"k8s.io/perf-tests/clusterloader2/pkg/measurement"
 	measurementutil "k8s.io/perf-tests/clusterloader2/pkg/measurement/util"
 	"k8s.io/perf-tests/clusterloader2/pkg/util"
-	"time"
 )
 
 const (
@@ -260,7 +261,7 @@ func (s *LoadBalancerNodeSyncMeasurement) labelNodeForLBs(exclude bool) error {
 
 func (s *LoadBalancerNodeSyncMeasurement) gather(identifier string) ([]measurement.Summary, error) {
 	klog.V(2).Infof("%s: gathering nodesync latency measurement...", s)
-	nodeSyncLatency := s.svcNodeSyncLatencyTracker.CalculateTransitionsLatency(nodeSyncTransition, measurementutil.MatchAll)
+	nodeSyncLatency := s.svcNodeSyncLatencyTracker.CalculateTransitionsLatency(nodeSyncTransition, measurementutil.MatchAll, "MatchAll")
 	content, err := util.PrettyPrintJSON(measurementutil.LatencyMapToPerfData(nodeSyncLatency))
 	if err != nil {
 		return nil, err

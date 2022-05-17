@@ -109,13 +109,13 @@ func (o *ObjectTransitionTimes) CalculateTransitionsLatency(t map[string]Transit
 	//-------------
 	for name, transition := range t {
 		//---------------
-		fmt.Println("NAME", name)
-		fmt.Println("TRANSITION", transition)
+		//fmt.Println("NAME", name)
+		//fmt.Println("TRANSITION", transition)
 		//---------------
 		lag := make([]LatencyData, 0, len(o.times))
 		for key, transitionTimes := range o.times {
 			//---------------
-			fmt.Println("key: ", key, "|", "tranisitionTimes: ", transitionTimes)
+			//fmt.Println("key: ", key, "|", "tranisitionTimes: ", transitionTimes)
 			//---------------
 			if !filter(key) {
 				klog.V(4).Infof("%s: filter doesn match key %s", o.name, key)
@@ -140,14 +140,9 @@ func (o *ObjectTransitionTimes) CalculateTransitionsLatency(t map[string]Transit
 				latencyTime = 0
 			}
 
-			//-------------
-			//nodenam := GetNodenameByPodname(key)
-			//fmt.Println(nodenam)
-			//-------------
-
 			//#############
 			lag = append(lag, latencyData{key: key, latency: latencyTime})
-			s := fmt.Sprintf("%s, %s, %s, %s %v, %v, %v, %v, %v\n", name, transition, key, filter_name, fromPhaseTime, toPhaseTime, latencyTime.Milliseconds(), fromPhaseTime.Unix(), toPhaseTime.Unix())
+			s := fmt.Sprintf("%s, %s, %s, %s, %v, %v, %v, %v, %v\n", name, transition, key, filter_name, fromPhaseTime, toPhaseTime, latencyTime.Milliseconds(), fromPhaseTime.Unix(), toPhaseTime.Unix())
 			fmt.Println(s)
 			_, err = f_timeline.WriteString(s)
 			if err != nil {
