@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-  <testsuite name="ClusterLoaderV2" tests="0" failures="3" errors="0" time="117.853">
-      <testcase name="density overall (/afs/cern.ch/user/f/fkatulsk/public/k8s-performance-tests/config/tests/cl2-density-config.yaml)" classname="ClusterLoaderV2" time="117.847231642">
-          <failure type="Failure">:0&#xA;[measurement call TestMetrics - TestMetrics error: [action start failed for SchedulingMetrics measurement: unknown (get pods https:kube-scheduler-pc-tbed-k8m-12.cern.ch:10259)]&#xA;measurement call TestMetrics - TestMetrics error: [action gather failed for EtcdMetrics measurement: unexpected error (code: 0) in ssh connection to master: &amp;errors.errorString{s:&#34;error getting SSH client to fkatulsk@pc-tbed-k8m-12.cern.ch:22: &#39;ssh: handshake failed: ssh: unable to authenticate, attempted methods [publickey none], no supported methods remain&#39;&#34;}&#xA;action gather failed for SchedulingMetrics measurement: unknown (get pods https:kube-scheduler-pc-tbed-k8m-12.cern.ch:10259)]]&#xA;:0</failure>
+  <testsuite name="ClusterLoaderV2" tests="0" failures="3" errors="0" time="152.271">
+      <testcase name="density overall (/afs/cern.ch/user/f/fkatulsk/public/k8s-performance-tests/config/tests/cl2-density-config.yaml)" classname="ClusterLoaderV2" time="152.264444273">
+          <failure type="Failure">:0&#xA;[measurement call TestMetrics - TestMetrics error: [action start failed for SchedulingMetrics measurement: unknown (get pods https:kube-scheduler-pc-tbed-k8m-12.cern.ch:10259)]&#xA;measurement call TestMetrics - TestMetrics error: [action gather failed for EtcdMetrics measurement: unexpected error (code: 0) in ssh connection to master: &amp;errors.errorString{s:&#34;error getting SSH client to fkatulsk@pc-tbed-k8m-12.cern.ch:22: &#39;ssh: handshake failed: ssh: unable to authenticate, attempted methods [none publickey], no supported methods remain&#39;&#34;}&#xA;action gather failed for SchedulingMetrics measurement: unknown (get pods https:kube-scheduler-pc-tbed-k8m-12.cern.ch:10259)]]&#xA;:0</failure>
       </testcase>
-      <testcase name="density: [step: 01] Starting measurements" classname="ClusterLoaderV2" time="0.493118629">
+      <testcase name="density: [step: 01] Starting measurements" classname="ClusterLoaderV2" time="0.432783132">
           <failure type="Failure">:0&#xA;[measurement call TestMetrics - TestMetrics error: [action start failed for SchedulingMetrics measurement: unknown (get pods https:kube-scheduler-pc-tbed-k8m-12.cern.ch:10259)]]&#xA;:0</failure>
       </testcase>
-      <testcase name="density: [step: 02] Starting latency pod measurements" classname="ClusterLoaderV2" time="0.10090237"></testcase>
-      <testcase name="density: [step: 03] Creating latency pods" classname="ClusterLoaderV2" time="0.020675575"></testcase>
-      <testcase name="density: [step: 04] Waiting for latency pods to be running" classname="ClusterLoaderV2" time="5.053110937"></testcase>
-      <testcase name="density: [step: 05] Deleting latency pods" classname="ClusterLoaderV2" time="0.022917391"></testcase>
-      <testcase name="density: [step: 06] Waiting for latency pods to be deleted" classname="ClusterLoaderV2" time="90.061765433"></testcase>
-      <testcase name="density: [step: 07] Collecting pod startup latency" classname="ClusterLoaderV2" time="0.029709888"></testcase>
-      <testcase name="density: [step: 08] Collecting measurements" classname="ClusterLoaderV2" time="11.136543531">
-          <failure type="Failure">:0&#xA;[measurement call TestMetrics - TestMetrics error: [action gather failed for EtcdMetrics measurement: unexpected error (code: 0) in ssh connection to master: &amp;errors.errorString{s:&#34;error getting SSH client to fkatulsk@pc-tbed-k8m-12.cern.ch:22: &#39;ssh: handshake failed: ssh: unable to authenticate, attempted methods [publickey none], no supported methods remain&#39;&#34;}&#xA;action gather failed for SchedulingMetrics measurement: unknown (get pods https:kube-scheduler-pc-tbed-k8m-12.cern.ch:10259)]]&#xA;:0</failure>
+      <testcase name="density: [step: 02] Starting latency pod measurements" classname="ClusterLoaderV2" time="0.101050549"></testcase>
+      <testcase name="density: [step: 03] Creating latency pods" classname="ClusterLoaderV2" time="0.027433099"></testcase>
+      <testcase name="density: [step: 04] Waiting for latency pods to be running" classname="ClusterLoaderV2" time="5.053611617"></testcase>
+      <testcase name="density: [step: 05] Deleting latency pods" classname="ClusterLoaderV2" time="0.055686373"></testcase>
+      <testcase name="density: [step: 06] Waiting for latency pods to be deleted" classname="ClusterLoaderV2" time="115.066212927"></testcase>
+      <testcase name="density: [step: 07] Collecting pod startup latency" classname="ClusterLoaderV2" time="0.042540058"></testcase>
+      <testcase name="density: [step: 08] Collecting measurements" classname="ClusterLoaderV2" time="20.733488056">
+          <failure type="Failure">:0&#xA;[measurement call TestMetrics - TestMetrics error: [action gather failed for EtcdMetrics measurement: unexpected error (code: 0) in ssh connection to master: &amp;errors.errorString{s:&#34;error getting SSH client to fkatulsk@pc-tbed-k8m-12.cern.ch:22: &#39;ssh: handshake failed: ssh: unable to authenticate, attempted methods [none publickey], no supported methods remain&#39;&#34;}&#xA;action gather failed for SchedulingMetrics measurement: unknown (get pods https:kube-scheduler-pc-tbed-k8m-12.cern.ch:10259)]]&#xA;:0</failure>
       </testcase>
   </testsuite>
