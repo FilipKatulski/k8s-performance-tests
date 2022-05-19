@@ -211,7 +211,7 @@ func (p *podStartupLatencyMeasurement) gather(c clientset.Interface, identifier 
 	for _, check := range checks {
 		transitions := podStartupTransitionsWithThreshold(p.threshold)
 		//-------------
-		// Modified function, go below to compare with the original.
+		// Modified function, go to phase_latency.go compare with the original.
 		podStartupLatency := p.podStartupEntries.CalculateTransitionsLatencyForPodLatencyMeasurement(c, transitions, check.filter, check.namePrefix)
 		//-------------
 
