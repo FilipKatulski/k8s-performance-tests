@@ -20,11 +20,13 @@ import (
 	"fmt"
 	"os"
 	"sort"
+	"strings"
 	"sync"
 	"time"
 
 	"k8s.io/klog"
 	//------------
+
 	clientset "k8s.io/client-go/kubernetes"
 	//------------
 )
@@ -137,7 +139,9 @@ func (o *ObjectTransitionTimes) CalculateTransitionsLatency(t map[string]Transit
 			//#############
 			lag = append(lag, latencyData{key: key, latency: latencyTime})
 			//-------------
-			s := fmt.Sprintf("%s, %s, %s, %s, %v, %v, %v, %v, %v\n", name, transition, key, filter_name, fromPhaseTime, toPhaseTime, latencyTime.Milliseconds(), fromPhaseTime.Unix(), toPhaseTime.Unix())
+			splitted := strings.Split(key, "/")
+			nodename := splitted[len(splitted)-1]
+			s := fmt.Sprintf("%s, %s, %s, %s, %s, %v, %v, %v\n", name, transition, key, nodename, filter_name, latencyTime.Milliseconds(), fromPhaseTime.Unix(), toPhaseTime.Unix())
 			//-------------
 			_, err = f_timeline.WriteString(s)
 			if err != nil {
