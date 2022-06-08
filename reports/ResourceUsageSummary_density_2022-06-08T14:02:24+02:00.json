@@ -1,0 +1,2290 @@
+{
+  "100": [
+    {
+      "Name": "calico-node-4bs5c/calico-node",
+      "CPU": 0.040434813,
+      "Mem": 262082560
+    },
+    {
+      "Name": "calico-node-4bs5c/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-4bs5c/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-4bs5c/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-56d9h/calico-node",
+      "CPU": 0.043214317,
+      "Mem": 248360960
+    },
+    {
+      "Name": "calico-node-56d9h/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-56d9h/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-56d9h/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-768hp/calico-node",
+      "CPU": 0.041942053,
+      "Mem": 259186688
+    },
+    {
+      "Name": "calico-node-768hp/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-768hp/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-768hp/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-78x6s/calico-node",
+      "CPU": 0.034711289,
+      "Mem": 262680576
+    },
+    {
+      "Name": "calico-node-78x6s/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-78x6s/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-78x6s/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-8fgxf/calico-node",
+      "CPU": 0.039039746,
+      "Mem": 253714432
+    },
+    {
+      "Name": "calico-node-8fgxf/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-8fgxf/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-8fgxf/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-96shh/calico-node",
+      "CPU": 0.043661632,
+      "Mem": 206761984
+    },
+    {
+      "Name": "calico-node-96shh/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-96shh/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-96shh/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-9tgnl/calico-node",
+      "CPU": 0.039846693,
+      "Mem": 253988864
+    },
+    {
+      "Name": "calico-node-9tgnl/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-9tgnl/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-9tgnl/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-b2jph/calico-node",
+      "CPU": 0.041903104,
+      "Mem": 252530688
+    },
+    {
+      "Name": "calico-node-b2jph/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-b2jph/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-b2jph/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-bw7j4/calico-node",
+      "CPU": 0.037156942,
+      "Mem": 253890560
+    },
+    {
+      "Name": "calico-node-bw7j4/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-bw7j4/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-bw7j4/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-c9fjs/calico-node",
+      "CPU": 0.042731681,
+      "Mem": 263114752
+    },
+    {
+      "Name": "calico-node-c9fjs/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-c9fjs/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-c9fjs/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-hr7lq/calico-node",
+      "CPU": 0.034677079,
+      "Mem": 258400256
+    },
+    {
+      "Name": "calico-node-hr7lq/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-hr7lq/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-hr7lq/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-jhbtl/calico-node",
+      "CPU": 0.040882262,
+      "Mem": 257712128
+    },
+    {
+      "Name": "calico-node-jhbtl/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-jhbtl/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-jhbtl/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-kzzpl/calico-node",
+      "CPU": 0.037347525,
+      "Mem": 263901184
+    },
+    {
+      "Name": "calico-node-kzzpl/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-kzzpl/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-kzzpl/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-lvmhm/calico-node",
+      "CPU": 0.035862882,
+      "Mem": 252178432
+    },
+    {
+      "Name": "calico-node-lvmhm/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-lvmhm/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-lvmhm/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-smh9s/calico-node",
+      "CPU": 0.042211468,
+      "Mem": 256086016
+    },
+    {
+      "Name": "calico-node-smh9s/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-smh9s/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-smh9s/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-xffdh/calico-node",
+      "CPU": 0.045977161,
+      "Mem": 259223552
+    },
+    {
+      "Name": "calico-node-xffdh/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-xffdh/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-xffdh/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-typha-autoscaler-5f7484cdc5-qwvt8/autoscaler",
+      "CPU": 0.000177711,
+      "Mem": 15880192
+    },
+    {
+      "Name": "kube-proxy-54kh5/kube-proxy",
+      "CPU": 0.007540187,
+      "Mem": 38592512
+    },
+    {
+      "Name": "kube-proxy-7sv84/kube-proxy",
+      "CPU": 0.00455075,
+      "Mem": 38219776
+    },
+    {
+      "Name": "kube-proxy-9zzw8/kube-proxy",
+      "CPU": 0.008836196,
+      "Mem": 37208064
+    },
+    {
+      "Name": "kube-proxy-bbwfg/kube-proxy",
+      "CPU": 0.000073932,
+      "Mem": 35618816
+    },
+    {
+      "Name": "kube-proxy-c6pmz/kube-proxy",
+      "CPU": 0.004902573,
+      "Mem": 36184064
+    },
+    {
+      "Name": "kube-proxy-cgsdn/kube-proxy",
+      "CPU": 0.008634958,
+      "Mem": 37232640
+    },
+    {
+      "Name": "kube-proxy-cgttx/kube-proxy",
+      "CPU": 0.000069724,
+      "Mem": 40296448
+    },
+    {
+      "Name": "kube-proxy-crzgv/kube-proxy",
+      "CPU": 0.00697452,
+      "Mem": 40534016
+    },
+    {
+      "Name": "kube-proxy-d4w68/kube-proxy",
+      "CPU": 0.004940727,
+      "Mem": 40071168
+    },
+    {
+      "Name": "kube-proxy-hnsjz/kube-proxy",
+      "CPU": 0.006275105,
+      "Mem": 33120256
+    },
+    {
+      "Name": "kube-proxy-m4gcj/kube-proxy",
+      "CPU": 0.00008656,
+      "Mem": 40144896
+    },
+    {
+      "Name": "kube-proxy-sk8kk/kube-proxy",
+      "CPU": 0.005487263,
+      "Mem": 35790848
+    },
+    {
+      "Name": "kube-proxy-v8w5s/kube-proxy",
+      "CPU": 0.005246924,
+      "Mem": 37646336
+    },
+    {
+      "Name": "kube-proxy-w7d5h/kube-proxy",
+      "CPU": 0.006052199,
+      "Mem": 38473728
+    },
+    {
+      "Name": "kube-proxy-xqrvd/kube-proxy",
+      "CPU": 0.000083684,
+      "Mem": 37904384
+    },
+    {
+      "Name": "kube-proxy-zhqd7/kube-proxy",
+      "CPU": 0.005907277,
+      "Mem": 39137280
+    },
+    {
+      "Name": "pc-tbed-tpu-08011.cern.ch/kubelet",
+      "CPU": 0.050813398,
+      "Mem": 89456640
+    },
+    {
+      "Name": "pc-tbed-tpu-08011.cern.ch/pods",
+      "CPU": 0.311583813,
+      "Mem": 3670597632
+    },
+    {
+      "Name": "pc-tbed-tpu-08012.cern.ch/kubelet",
+      "CPU": 0.05279735,
+      "Mem": 91283456
+    },
+    {
+      "Name": "pc-tbed-tpu-08012.cern.ch/pods",
+      "CPU": 0.090110961,
+      "Mem": 1035476992
+    },
+    {
+      "Name": "pc-tbed-tpu-08013.cern.ch/kubelet",
+      "CPU": 0.060629718,
+      "Mem": 90206208
+    },
+    {
+      "Name": "pc-tbed-tpu-08013.cern.ch/pods",
+      "CPU": 0.077144653,
+      "Mem": 1020399616
+    },
+    {
+      "Name": "pc-tbed-tpu-08014.cern.ch/kubelet",
+      "CPU": 0.038854054,
+      "Mem": 89174016
+    },
+    {
+      "Name": "pc-tbed-tpu-08014.cern.ch/pods",
+      "CPU": 0.088940045,
+      "Mem": 976367616
+    },
+    {
+      "Name": "pc-tbed-tpu-08015.cern.ch/kubelet",
+      "CPU": 0.039288919,
+      "Mem": 98963456
+    },
+    {
+      "Name": "pc-tbed-tpu-08015.cern.ch/pods",
+      "CPU": 0.080718864,
+      "Mem": 1076838400
+    },
+    {
+      "Name": "pc-tbed-tpu-08016.cern.ch/kubelet",
+      "CPU": 0.054541712,
+      "Mem": 84701184
+    },
+    {
+      "Name": "pc-tbed-tpu-08016.cern.ch/pods",
+      "CPU": 0.08304546,
+      "Mem": 1242120192
+    },
+    {
+      "Name": "pc-tbed-tpu-08017.cern.ch/kubelet",
+      "CPU": 0.067251569,
+      "Mem": 102330368
+    },
+    {
+      "Name": "pc-tbed-tpu-08017.cern.ch/pods",
+      "CPU": 0.079002807,
+      "Mem": 673636352
+    },
+    {
+      "Name": "pc-tbed-tpu-08018.cern.ch/kubelet",
+      "CPU": 0.039074583,
+      "Mem": 90963968
+    },
+    {
+      "Name": "pc-tbed-tpu-08018.cern.ch/pods",
+      "CPU": 0.312511978,
+      "Mem": 513384448
+    },
+    {
+      "Name": "pc-tbed-tpu-08019.cern.ch/kubelet",
+      "CPU": 0.07870934,
+      "Mem": 99160064
+    },
+    {
+      "Name": "pc-tbed-tpu-08019.cern.ch/pods",
+      "CPU": 0.563326115,
+      "Mem": 2095869952
+    },
+    {
+      "Name": "pc-tbed-tpu-08020.cern.ch/kubelet",
+      "CPU": 0.061120553,
+      "Mem": 94588928
+    },
+    {
+      "Name": "pc-tbed-tpu-08020.cern.ch/pods",
+      "CPU": 0.43507466,
+      "Mem": 1687789568
+    },
+    {
+      "Name": "pc-tbed-tpu-08021.cern.ch/kubelet",
+      "CPU": 0.044932966,
+      "Mem": 93241344
+    },
+    {
+      "Name": "pc-tbed-tpu-08021.cern.ch/pods",
+      "CPU": 0.071972804,
+      "Mem": 647061504
+    },
+    {
+      "Name": "pc-tbed-tpu-08022.cern.ch/kubelet",
+      "CPU": 0.039762733,
+      "Mem": 106287104
+    },
+    {
+      "Name": "pc-tbed-tpu-08022.cern.ch/pods",
+      "CPU": 0.196528548,
+      "Mem": 48514146304
+    },
+    {
+      "Name": "pc-tbed-tpu-08023.cern.ch/kubelet",
+      "CPU": 0.049855194,
+      "Mem": 95391744
+    },
+    {
+      "Name": "pc-tbed-tpu-08023.cern.ch/pods",
+      "CPU": 0.076307595,
+      "Mem": 500826112
+    },
+    {
+      "Name": "pc-tbed-tpu-08024.cern.ch/kubelet",
+      "CPU": 0.044734247,
+      "Mem": 95506432
+    },
+    {
+      "Name": "pc-tbed-tpu-08024.cern.ch/pods",
+      "CPU": 0.0910302,
+      "Mem": 623685632
+    },
+    {
+      "Name": "pc-tbed-tpu-08025.cern.ch/kubelet",
+      "CPU": 0.043448347,
+      "Mem": 111759360
+    },
+    {
+      "Name": "pc-tbed-tpu-08025.cern.ch/pods",
+      "CPU": 0.092541895,
+      "Mem": 488259584
+    },
+    {
+      "Name": "pc-tbed-tpu-08026.cern.ch/kubelet",
+      "CPU": 0.059359418,
+      "Mem": 92176384
+    },
+    {
+      "Name": "pc-tbed-tpu-08026.cern.ch/pods",
+      "CPU": 0.35691784,
+      "Mem": 683106304
+    },
+    {
+      "Name": "reflector-8495cc879-4cqzz/reflector",
+      "CPU": 0.002234576,
+      "Mem": 111562752
+    }
+  ],
+  "50": [
+    {
+      "Name": "calico-node-4bs5c/calico-node",
+      "CPU": 0.037196053,
+      "Mem": 261685248
+    },
+    {
+      "Name": "calico-node-4bs5c/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-4bs5c/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-4bs5c/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-56d9h/calico-node",
+      "CPU": 0.036683151,
+      "Mem": 247889920
+    },
+    {
+      "Name": "calico-node-56d9h/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-56d9h/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-56d9h/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-768hp/calico-node",
+      "CPU": 0.039008906,
+      "Mem": 259039232
+    },
+    {
+      "Name": "calico-node-768hp/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-768hp/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-768hp/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-78x6s/calico-node",
+      "CPU": 0.033696089,
+      "Mem": 262234112
+    },
+    {
+      "Name": "calico-node-78x6s/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-78x6s/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-78x6s/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-8fgxf/calico-node",
+      "CPU": 0.038195833,
+      "Mem": 253603840
+    },
+    {
+      "Name": "calico-node-8fgxf/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-8fgxf/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-8fgxf/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-96shh/calico-node",
+      "CPU": 0.040810839,
+      "Mem": 205615104
+    },
+    {
+      "Name": "calico-node-96shh/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-96shh/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-96shh/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-9tgnl/calico-node",
+      "CPU": 0.037145466,
+      "Mem": 253861888
+    },
+    {
+      "Name": "calico-node-9tgnl/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-9tgnl/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-9tgnl/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-b2jph/calico-node",
+      "CPU": 0.040206244,
+      "Mem": 252444672
+    },
+    {
+      "Name": "calico-node-b2jph/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-b2jph/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-b2jph/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-bw7j4/calico-node",
+      "CPU": 0.035631791,
+      "Mem": 252841984
+    },
+    {
+      "Name": "calico-node-bw7j4/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-bw7j4/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-bw7j4/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-c9fjs/calico-node",
+      "CPU": 0.034092803,
+      "Mem": 262168576
+    },
+    {
+      "Name": "calico-node-c9fjs/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-c9fjs/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-c9fjs/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-hr7lq/calico-node",
+      "CPU": 0.026923404,
+      "Mem": 257187840
+    },
+    {
+      "Name": "calico-node-hr7lq/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-hr7lq/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-hr7lq/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-jhbtl/calico-node",
+      "CPU": 0.035444169,
+      "Mem": 257564672
+    },
+    {
+      "Name": "calico-node-jhbtl/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-jhbtl/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-jhbtl/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-kzzpl/calico-node",
+      "CPU": 0.034959854,
+      "Mem": 263827456
+    },
+    {
+      "Name": "calico-node-kzzpl/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-kzzpl/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-kzzpl/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-lvmhm/calico-node",
+      "CPU": 0.03173033,
+      "Mem": 251723776
+    },
+    {
+      "Name": "calico-node-lvmhm/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-lvmhm/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-lvmhm/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-smh9s/calico-node",
+      "CPU": 0.036238986,
+      "Mem": 256020480
+    },
+    {
+      "Name": "calico-node-smh9s/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-smh9s/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-smh9s/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-xffdh/calico-node",
+      "CPU": 0.033855315,
+      "Mem": 258019328
+    },
+    {
+      "Name": "calico-node-xffdh/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-xffdh/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-xffdh/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-typha-autoscaler-5f7484cdc5-qwvt8/autoscaler",
+      "CPU": 0.000048152,
+      "Mem": 15847424
+    },
+    {
+      "Name": "kube-proxy-54kh5/kube-proxy",
+      "CPU": 0.005993915,
+      "Mem": 38510592
+    },
+    {
+      "Name": "kube-proxy-7sv84/kube-proxy",
+      "CPU": 0.003836418,
+      "Mem": 38195200
+    },
+    {
+      "Name": "kube-proxy-9zzw8/kube-proxy",
+      "CPU": 0.006568896,
+      "Mem": 37150720
+    },
+    {
+      "Name": "kube-proxy-bbwfg/kube-proxy",
+      "CPU": 0.00006011,
+      "Mem": 35217408
+    },
+    {
+      "Name": "kube-proxy-c6pmz/kube-proxy",
+      "CPU": 0.004588684,
+      "Mem": 35995648
+    },
+    {
+      "Name": "kube-proxy-cgsdn/kube-proxy",
+      "CPU": 0.000060456,
+      "Mem": 37117952
+    },
+    {
+      "Name": "kube-proxy-cgttx/kube-proxy",
+      "CPU": 0.000039939,
+      "Mem": 40075264
+    },
+    {
+      "Name": "kube-proxy-crzgv/kube-proxy",
+      "CPU": 0.003896022,
+      "Mem": 40427520
+    },
+    {
+      "Name": "kube-proxy-d4w68/kube-proxy",
+      "CPU": 0.000055313,
+      "Mem": 39440384
+    },
+    {
+      "Name": "kube-proxy-hnsjz/kube-proxy",
+      "CPU": 0.004035739,
+      "Mem": 33112064
+    },
+    {
+      "Name": "kube-proxy-m4gcj/kube-proxy",
+      "CPU": 0.000065819,
+      "Mem": 40038400
+    },
+    {
+      "Name": "kube-proxy-sk8kk/kube-proxy",
+      "CPU": 0.000051249,
+      "Mem": 35299328
+    },
+    {
+      "Name": "kube-proxy-v8w5s/kube-proxy",
+      "CPU": 0.000106259,
+      "Mem": 37244928
+    },
+    {
+      "Name": "kube-proxy-w7d5h/kube-proxy",
+      "CPU": 0.004836448,
+      "Mem": 37793792
+    },
+    {
+      "Name": "kube-proxy-xqrvd/kube-proxy",
+      "CPU": 0.000065102,
+      "Mem": 37892096
+    },
+    {
+      "Name": "kube-proxy-zhqd7/kube-proxy",
+      "CPU": 0.005370875,
+      "Mem": 38768640
+    },
+    {
+      "Name": "pc-tbed-tpu-08011.cern.ch/kubelet",
+      "CPU": 0.04547172,
+      "Mem": 89374720
+    },
+    {
+      "Name": "pc-tbed-tpu-08011.cern.ch/pods",
+      "CPU": 0.114835798,
+      "Mem": 3670540288
+    },
+    {
+      "Name": "pc-tbed-tpu-08012.cern.ch/kubelet",
+      "CPU": 0.048913977,
+      "Mem": 89231360
+    },
+    {
+      "Name": "pc-tbed-tpu-08012.cern.ch/pods",
+      "CPU": 0.081772945,
+      "Mem": 1032855552
+    },
+    {
+      "Name": "pc-tbed-tpu-08013.cern.ch/kubelet",
+      "CPU": 0.054285365,
+      "Mem": 88580096
+    },
+    {
+      "Name": "pc-tbed-tpu-08013.cern.ch/pods",
+      "CPU": 0.059422611,
+      "Mem": 1014530048
+    },
+    {
+      "Name": "pc-tbed-tpu-08014.cern.ch/kubelet",
+      "CPU": 0.025894589,
+      "Mem": 87646208
+    },
+    {
+      "Name": "pc-tbed-tpu-08014.cern.ch/pods",
+      "CPU": 0.066293148,
+      "Mem": 964440064
+    },
+    {
+      "Name": "pc-tbed-tpu-08015.cern.ch/kubelet",
+      "CPU": 0.039055857,
+      "Mem": 95416320
+    },
+    {
+      "Name": "pc-tbed-tpu-08015.cern.ch/pods",
+      "CPU": 0.07317163,
+      "Mem": 1076150272
+    },
+    {
+      "Name": "pc-tbed-tpu-08016.cern.ch/kubelet",
+      "CPU": 0.045553372,
+      "Mem": 82325504
+    },
+    {
+      "Name": "pc-tbed-tpu-08016.cern.ch/pods",
+      "CPU": 0.075911606,
+      "Mem": 1236951040
+    },
+    {
+      "Name": "pc-tbed-tpu-08017.cern.ch/kubelet",
+      "CPU": 0.052755508,
+      "Mem": 100343808
+    },
+    {
+      "Name": "pc-tbed-tpu-08017.cern.ch/pods",
+      "CPU": 0.070955946,
+      "Mem": 672329728
+    },
+    {
+      "Name": "pc-tbed-tpu-08018.cern.ch/kubelet",
+      "CPU": 0.027342846,
+      "Mem": 86503424
+    },
+    {
+      "Name": "pc-tbed-tpu-08018.cern.ch/pods",
+      "CPU": 0.076570238,
+      "Mem": 497627136
+    },
+    {
+      "Name": "pc-tbed-tpu-08019.cern.ch/kubelet",
+      "CPU": 0.072904808,
+      "Mem": 97431552
+    },
+    {
+      "Name": "pc-tbed-tpu-08019.cern.ch/pods",
+      "CPU": 0.474576219,
+      "Mem": 2085240832
+    },
+    {
+      "Name": "pc-tbed-tpu-08020.cern.ch/kubelet",
+      "CPU": 0.037107017,
+      "Mem": 93106176
+    },
+    {
+      "Name": "pc-tbed-tpu-08020.cern.ch/pods",
+      "CPU": 0.312779011,
+      "Mem": 1672278016
+    },
+    {
+      "Name": "pc-tbed-tpu-08021.cern.ch/kubelet",
+      "CPU": 0.038311363,
+      "Mem": 92684288
+    },
+    {
+      "Name": "pc-tbed-tpu-08021.cern.ch/pods",
+      "CPU": 0.068186175,
+      "Mem": 638922752
+    },
+    {
+      "Name": "pc-tbed-tpu-08022.cern.ch/kubelet",
+      "CPU": 0.036986015,
+      "Mem": 105857024
+    },
+    {
+      "Name": "pc-tbed-tpu-08022.cern.ch/pods",
+      "CPU": 0.114625725,
+      "Mem": 48513695744
+    },
+    {
+      "Name": "pc-tbed-tpu-08023.cern.ch/kubelet",
+      "CPU": 0.044144048,
+      "Mem": 91856896
+    },
+    {
+      "Name": "pc-tbed-tpu-08023.cern.ch/pods",
+      "CPU": 0.058869659,
+      "Mem": 500420608
+    },
+    {
+      "Name": "pc-tbed-tpu-08024.cern.ch/kubelet",
+      "CPU": 0.029765932,
+      "Mem": 95449088
+    },
+    {
+      "Name": "pc-tbed-tpu-08024.cern.ch/pods",
+      "CPU": 0.039818137,
+      "Mem": 621953024
+    },
+    {
+      "Name": "pc-tbed-tpu-08025.cern.ch/kubelet",
+      "CPU": 0.038323616,
+      "Mem": 111456256
+    },
+    {
+      "Name": "pc-tbed-tpu-08025.cern.ch/pods",
+      "CPU": 0.070632753,
+      "Mem": 485736448
+    },
+    {
+      "Name": "pc-tbed-tpu-08026.cern.ch/kubelet",
+      "CPU": 0.049213704,
+      "Mem": 92061696
+    },
+    {
+      "Name": "pc-tbed-tpu-08026.cern.ch/pods",
+      "CPU": 0.139637196,
+      "Mem": 677879808
+    },
+    {
+      "Name": "reflector-8495cc879-4cqzz/reflector",
+      "CPU": 0.001644021,
+      "Mem": 111546368
+    }
+  ],
+  "90": [
+    {
+      "Name": "calico-node-4bs5c/calico-node",
+      "CPU": 0.040434813,
+      "Mem": 262082560
+    },
+    {
+      "Name": "calico-node-4bs5c/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-4bs5c/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-4bs5c/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-56d9h/calico-node",
+      "CPU": 0.043214317,
+      "Mem": 248360960
+    },
+    {
+      "Name": "calico-node-56d9h/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-56d9h/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-56d9h/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-768hp/calico-node",
+      "CPU": 0.041942053,
+      "Mem": 259186688
+    },
+    {
+      "Name": "calico-node-768hp/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-768hp/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-768hp/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-78x6s/calico-node",
+      "CPU": 0.034711289,
+      "Mem": 262680576
+    },
+    {
+      "Name": "calico-node-78x6s/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-78x6s/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-78x6s/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-8fgxf/calico-node",
+      "CPU": 0.039039746,
+      "Mem": 253714432
+    },
+    {
+      "Name": "calico-node-8fgxf/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-8fgxf/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-8fgxf/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-96shh/calico-node",
+      "CPU": 0.043661632,
+      "Mem": 206761984
+    },
+    {
+      "Name": "calico-node-96shh/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-96shh/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-96shh/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-9tgnl/calico-node",
+      "CPU": 0.039846693,
+      "Mem": 253988864
+    },
+    {
+      "Name": "calico-node-9tgnl/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-9tgnl/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-9tgnl/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-b2jph/calico-node",
+      "CPU": 0.041903104,
+      "Mem": 252530688
+    },
+    {
+      "Name": "calico-node-b2jph/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-b2jph/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-b2jph/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-bw7j4/calico-node",
+      "CPU": 0.037156942,
+      "Mem": 253890560
+    },
+    {
+      "Name": "calico-node-bw7j4/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-bw7j4/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-bw7j4/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-c9fjs/calico-node",
+      "CPU": 0.042731681,
+      "Mem": 263114752
+    },
+    {
+      "Name": "calico-node-c9fjs/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-c9fjs/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-c9fjs/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-hr7lq/calico-node",
+      "CPU": 0.034677079,
+      "Mem": 258400256
+    },
+    {
+      "Name": "calico-node-hr7lq/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-hr7lq/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-hr7lq/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-jhbtl/calico-node",
+      "CPU": 0.040882262,
+      "Mem": 257712128
+    },
+    {
+      "Name": "calico-node-jhbtl/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-jhbtl/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-jhbtl/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-kzzpl/calico-node",
+      "CPU": 0.037347525,
+      "Mem": 263901184
+    },
+    {
+      "Name": "calico-node-kzzpl/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-kzzpl/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-kzzpl/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-lvmhm/calico-node",
+      "CPU": 0.035862882,
+      "Mem": 252178432
+    },
+    {
+      "Name": "calico-node-lvmhm/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-lvmhm/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-lvmhm/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-smh9s/calico-node",
+      "CPU": 0.042211468,
+      "Mem": 256086016
+    },
+    {
+      "Name": "calico-node-smh9s/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-smh9s/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-smh9s/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-xffdh/calico-node",
+      "CPU": 0.045977161,
+      "Mem": 259223552
+    },
+    {
+      "Name": "calico-node-xffdh/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-xffdh/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-xffdh/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-typha-autoscaler-5f7484cdc5-qwvt8/autoscaler",
+      "CPU": 0.000177711,
+      "Mem": 15880192
+    },
+    {
+      "Name": "kube-proxy-54kh5/kube-proxy",
+      "CPU": 0.007540187,
+      "Mem": 38592512
+    },
+    {
+      "Name": "kube-proxy-7sv84/kube-proxy",
+      "CPU": 0.00455075,
+      "Mem": 38219776
+    },
+    {
+      "Name": "kube-proxy-9zzw8/kube-proxy",
+      "CPU": 0.008836196,
+      "Mem": 37208064
+    },
+    {
+      "Name": "kube-proxy-bbwfg/kube-proxy",
+      "CPU": 0.000073932,
+      "Mem": 35618816
+    },
+    {
+      "Name": "kube-proxy-c6pmz/kube-proxy",
+      "CPU": 0.004902573,
+      "Mem": 36184064
+    },
+    {
+      "Name": "kube-proxy-cgsdn/kube-proxy",
+      "CPU": 0.008634958,
+      "Mem": 37232640
+    },
+    {
+      "Name": "kube-proxy-cgttx/kube-proxy",
+      "CPU": 0.000069724,
+      "Mem": 40296448
+    },
+    {
+      "Name": "kube-proxy-crzgv/kube-proxy",
+      "CPU": 0.00697452,
+      "Mem": 40534016
+    },
+    {
+      "Name": "kube-proxy-d4w68/kube-proxy",
+      "CPU": 0.004940727,
+      "Mem": 40071168
+    },
+    {
+      "Name": "kube-proxy-hnsjz/kube-proxy",
+      "CPU": 0.006275105,
+      "Mem": 33120256
+    },
+    {
+      "Name": "kube-proxy-m4gcj/kube-proxy",
+      "CPU": 0.00008656,
+      "Mem": 40144896
+    },
+    {
+      "Name": "kube-proxy-sk8kk/kube-proxy",
+      "CPU": 0.005487263,
+      "Mem": 35790848
+    },
+    {
+      "Name": "kube-proxy-v8w5s/kube-proxy",
+      "CPU": 0.005246924,
+      "Mem": 37646336
+    },
+    {
+      "Name": "kube-proxy-w7d5h/kube-proxy",
+      "CPU": 0.006052199,
+      "Mem": 38473728
+    },
+    {
+      "Name": "kube-proxy-xqrvd/kube-proxy",
+      "CPU": 0.000083684,
+      "Mem": 37904384
+    },
+    {
+      "Name": "kube-proxy-zhqd7/kube-proxy",
+      "CPU": 0.005907277,
+      "Mem": 39137280
+    },
+    {
+      "Name": "pc-tbed-tpu-08011.cern.ch/kubelet",
+      "CPU": 0.050813398,
+      "Mem": 89456640
+    },
+    {
+      "Name": "pc-tbed-tpu-08011.cern.ch/pods",
+      "CPU": 0.311583813,
+      "Mem": 3670597632
+    },
+    {
+      "Name": "pc-tbed-tpu-08012.cern.ch/kubelet",
+      "CPU": 0.05279735,
+      "Mem": 91283456
+    },
+    {
+      "Name": "pc-tbed-tpu-08012.cern.ch/pods",
+      "CPU": 0.090110961,
+      "Mem": 1035476992
+    },
+    {
+      "Name": "pc-tbed-tpu-08013.cern.ch/kubelet",
+      "CPU": 0.060629718,
+      "Mem": 90206208
+    },
+    {
+      "Name": "pc-tbed-tpu-08013.cern.ch/pods",
+      "CPU": 0.077144653,
+      "Mem": 1020399616
+    },
+    {
+      "Name": "pc-tbed-tpu-08014.cern.ch/kubelet",
+      "CPU": 0.038854054,
+      "Mem": 89174016
+    },
+    {
+      "Name": "pc-tbed-tpu-08014.cern.ch/pods",
+      "CPU": 0.088940045,
+      "Mem": 976367616
+    },
+    {
+      "Name": "pc-tbed-tpu-08015.cern.ch/kubelet",
+      "CPU": 0.039288919,
+      "Mem": 98963456
+    },
+    {
+      "Name": "pc-tbed-tpu-08015.cern.ch/pods",
+      "CPU": 0.080718864,
+      "Mem": 1076838400
+    },
+    {
+      "Name": "pc-tbed-tpu-08016.cern.ch/kubelet",
+      "CPU": 0.054541712,
+      "Mem": 84701184
+    },
+    {
+      "Name": "pc-tbed-tpu-08016.cern.ch/pods",
+      "CPU": 0.08304546,
+      "Mem": 1242120192
+    },
+    {
+      "Name": "pc-tbed-tpu-08017.cern.ch/kubelet",
+      "CPU": 0.067251569,
+      "Mem": 102330368
+    },
+    {
+      "Name": "pc-tbed-tpu-08017.cern.ch/pods",
+      "CPU": 0.079002807,
+      "Mem": 673636352
+    },
+    {
+      "Name": "pc-tbed-tpu-08018.cern.ch/kubelet",
+      "CPU": 0.039074583,
+      "Mem": 90963968
+    },
+    {
+      "Name": "pc-tbed-tpu-08018.cern.ch/pods",
+      "CPU": 0.312511978,
+      "Mem": 513384448
+    },
+    {
+      "Name": "pc-tbed-tpu-08019.cern.ch/kubelet",
+      "CPU": 0.07870934,
+      "Mem": 99160064
+    },
+    {
+      "Name": "pc-tbed-tpu-08019.cern.ch/pods",
+      "CPU": 0.563326115,
+      "Mem": 2095869952
+    },
+    {
+      "Name": "pc-tbed-tpu-08020.cern.ch/kubelet",
+      "CPU": 0.061120553,
+      "Mem": 94588928
+    },
+    {
+      "Name": "pc-tbed-tpu-08020.cern.ch/pods",
+      "CPU": 0.43507466,
+      "Mem": 1687789568
+    },
+    {
+      "Name": "pc-tbed-tpu-08021.cern.ch/kubelet",
+      "CPU": 0.044932966,
+      "Mem": 93241344
+    },
+    {
+      "Name": "pc-tbed-tpu-08021.cern.ch/pods",
+      "CPU": 0.071972804,
+      "Mem": 647061504
+    },
+    {
+      "Name": "pc-tbed-tpu-08022.cern.ch/kubelet",
+      "CPU": 0.039762733,
+      "Mem": 106287104
+    },
+    {
+      "Name": "pc-tbed-tpu-08022.cern.ch/pods",
+      "CPU": 0.196528548,
+      "Mem": 48514146304
+    },
+    {
+      "Name": "pc-tbed-tpu-08023.cern.ch/kubelet",
+      "CPU": 0.049855194,
+      "Mem": 95391744
+    },
+    {
+      "Name": "pc-tbed-tpu-08023.cern.ch/pods",
+      "CPU": 0.076307595,
+      "Mem": 500826112
+    },
+    {
+      "Name": "pc-tbed-tpu-08024.cern.ch/kubelet",
+      "CPU": 0.044734247,
+      "Mem": 95506432
+    },
+    {
+      "Name": "pc-tbed-tpu-08024.cern.ch/pods",
+      "CPU": 0.0910302,
+      "Mem": 623685632
+    },
+    {
+      "Name": "pc-tbed-tpu-08025.cern.ch/kubelet",
+      "CPU": 0.043448347,
+      "Mem": 111759360
+    },
+    {
+      "Name": "pc-tbed-tpu-08025.cern.ch/pods",
+      "CPU": 0.092541895,
+      "Mem": 488259584
+    },
+    {
+      "Name": "pc-tbed-tpu-08026.cern.ch/kubelet",
+      "CPU": 0.059359418,
+      "Mem": 92176384
+    },
+    {
+      "Name": "pc-tbed-tpu-08026.cern.ch/pods",
+      "CPU": 0.35691784,
+      "Mem": 683106304
+    },
+    {
+      "Name": "reflector-8495cc879-4cqzz/reflector",
+      "CPU": 0.002234576,
+      "Mem": 111562752
+    }
+  ],
+  "99": [
+    {
+      "Name": "calico-node-4bs5c/calico-node",
+      "CPU": 0.040434813,
+      "Mem": 262082560
+    },
+    {
+      "Name": "calico-node-4bs5c/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-4bs5c/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-4bs5c/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-56d9h/calico-node",
+      "CPU": 0.043214317,
+      "Mem": 248360960
+    },
+    {
+      "Name": "calico-node-56d9h/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-56d9h/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-56d9h/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-768hp/calico-node",
+      "CPU": 0.041942053,
+      "Mem": 259186688
+    },
+    {
+      "Name": "calico-node-768hp/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-768hp/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-768hp/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-78x6s/calico-node",
+      "CPU": 0.034711289,
+      "Mem": 262680576
+    },
+    {
+      "Name": "calico-node-78x6s/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-78x6s/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-78x6s/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-8fgxf/calico-node",
+      "CPU": 0.039039746,
+      "Mem": 253714432
+    },
+    {
+      "Name": "calico-node-8fgxf/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-8fgxf/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-8fgxf/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-96shh/calico-node",
+      "CPU": 0.043661632,
+      "Mem": 206761984
+    },
+    {
+      "Name": "calico-node-96shh/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-96shh/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-96shh/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-9tgnl/calico-node",
+      "CPU": 0.039846693,
+      "Mem": 253988864
+    },
+    {
+      "Name": "calico-node-9tgnl/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-9tgnl/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-9tgnl/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-b2jph/calico-node",
+      "CPU": 0.041903104,
+      "Mem": 252530688
+    },
+    {
+      "Name": "calico-node-b2jph/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-b2jph/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-b2jph/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-bw7j4/calico-node",
+      "CPU": 0.037156942,
+      "Mem": 253890560
+    },
+    {
+      "Name": "calico-node-bw7j4/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-bw7j4/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-bw7j4/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-c9fjs/calico-node",
+      "CPU": 0.042731681,
+      "Mem": 263114752
+    },
+    {
+      "Name": "calico-node-c9fjs/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-c9fjs/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-c9fjs/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-hr7lq/calico-node",
+      "CPU": 0.034677079,
+      "Mem": 258400256
+    },
+    {
+      "Name": "calico-node-hr7lq/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-hr7lq/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-hr7lq/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-jhbtl/calico-node",
+      "CPU": 0.040882262,
+      "Mem": 257712128
+    },
+    {
+      "Name": "calico-node-jhbtl/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-jhbtl/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-jhbtl/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-kzzpl/calico-node",
+      "CPU": 0.037347525,
+      "Mem": 263901184
+    },
+    {
+      "Name": "calico-node-kzzpl/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-kzzpl/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-kzzpl/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-lvmhm/calico-node",
+      "CPU": 0.035862882,
+      "Mem": 252178432
+    },
+    {
+      "Name": "calico-node-lvmhm/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-lvmhm/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-lvmhm/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-smh9s/calico-node",
+      "CPU": 0.042211468,
+      "Mem": 256086016
+    },
+    {
+      "Name": "calico-node-smh9s/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-smh9s/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-smh9s/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-xffdh/calico-node",
+      "CPU": 0.045977161,
+      "Mem": 259223552
+    },
+    {
+      "Name": "calico-node-xffdh/flexvol-driver",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-xffdh/install-cni",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-node-xffdh/upgrade-ipam",
+      "CPU": 0,
+      "Mem": 0
+    },
+    {
+      "Name": "calico-typha-autoscaler-5f7484cdc5-qwvt8/autoscaler",
+      "CPU": 0.000177711,
+      "Mem": 15880192
+    },
+    {
+      "Name": "kube-proxy-54kh5/kube-proxy",
+      "CPU": 0.007540187,
+      "Mem": 38592512
+    },
+    {
+      "Name": "kube-proxy-7sv84/kube-proxy",
+      "CPU": 0.00455075,
+      "Mem": 38219776
+    },
+    {
+      "Name": "kube-proxy-9zzw8/kube-proxy",
+      "CPU": 0.008836196,
+      "Mem": 37208064
+    },
+    {
+      "Name": "kube-proxy-bbwfg/kube-proxy",
+      "CPU": 0.000073932,
+      "Mem": 35618816
+    },
+    {
+      "Name": "kube-proxy-c6pmz/kube-proxy",
+      "CPU": 0.004902573,
+      "Mem": 36184064
+    },
+    {
+      "Name": "kube-proxy-cgsdn/kube-proxy",
+      "CPU": 0.008634958,
+      "Mem": 37232640
+    },
+    {
+      "Name": "kube-proxy-cgttx/kube-proxy",
+      "CPU": 0.000069724,
+      "Mem": 40296448
+    },
+    {
+      "Name": "kube-proxy-crzgv/kube-proxy",
+      "CPU": 0.00697452,
+      "Mem": 40534016
+    },
+    {
+      "Name": "kube-proxy-d4w68/kube-proxy",
+      "CPU": 0.004940727,
+      "Mem": 40071168
+    },
+    {
+      "Name": "kube-proxy-hnsjz/kube-proxy",
+      "CPU": 0.006275105,
+      "Mem": 33120256
+    },
+    {
+      "Name": "kube-proxy-m4gcj/kube-proxy",
+      "CPU": 0.00008656,
+      "Mem": 40144896
+    },
+    {
+      "Name": "kube-proxy-sk8kk/kube-proxy",
+      "CPU": 0.005487263,
+      "Mem": 35790848
+    },
+    {
+      "Name": "kube-proxy-v8w5s/kube-proxy",
+      "CPU": 0.005246924,
+      "Mem": 37646336
+    },
+    {
+      "Name": "kube-proxy-w7d5h/kube-proxy",
+      "CPU": 0.006052199,
+      "Mem": 38473728
+    },
+    {
+      "Name": "kube-proxy-xqrvd/kube-proxy",
+      "CPU": 0.000083684,
+      "Mem": 37904384
+    },
+    {
+      "Name": "kube-proxy-zhqd7/kube-proxy",
+      "CPU": 0.005907277,
+      "Mem": 39137280
+    },
+    {
+      "Name": "pc-tbed-tpu-08011.cern.ch/kubelet",
+      "CPU": 0.050813398,
+      "Mem": 89456640
+    },
+    {
+      "Name": "pc-tbed-tpu-08011.cern.ch/pods",
+      "CPU": 0.311583813,
+      "Mem": 3670597632
+    },
+    {
+      "Name": "pc-tbed-tpu-08012.cern.ch/kubelet",
+      "CPU": 0.05279735,
+      "Mem": 91283456
+    },
+    {
+      "Name": "pc-tbed-tpu-08012.cern.ch/pods",
+      "CPU": 0.090110961,
+      "Mem": 1035476992
+    },
+    {
+      "Name": "pc-tbed-tpu-08013.cern.ch/kubelet",
+      "CPU": 0.060629718,
+      "Mem": 90206208
+    },
+    {
+      "Name": "pc-tbed-tpu-08013.cern.ch/pods",
+      "CPU": 0.077144653,
+      "Mem": 1020399616
+    },
+    {
+      "Name": "pc-tbed-tpu-08014.cern.ch/kubelet",
+      "CPU": 0.038854054,
+      "Mem": 89174016
+    },
+    {
+      "Name": "pc-tbed-tpu-08014.cern.ch/pods",
+      "CPU": 0.088940045,
+      "Mem": 976367616
+    },
+    {
+      "Name": "pc-tbed-tpu-08015.cern.ch/kubelet",
+      "CPU": 0.039288919,
+      "Mem": 98963456
+    },
+    {
+      "Name": "pc-tbed-tpu-08015.cern.ch/pods",
+      "CPU": 0.080718864,
+      "Mem": 1076838400
+    },
+    {
+      "Name": "pc-tbed-tpu-08016.cern.ch/kubelet",
+      "CPU": 0.054541712,
+      "Mem": 84701184
+    },
+    {
+      "Name": "pc-tbed-tpu-08016.cern.ch/pods",
+      "CPU": 0.08304546,
+      "Mem": 1242120192
+    },
+    {
+      "Name": "pc-tbed-tpu-08017.cern.ch/kubelet",
+      "CPU": 0.067251569,
+      "Mem": 102330368
+    },
+    {
+      "Name": "pc-tbed-tpu-08017.cern.ch/pods",
+      "CPU": 0.079002807,
+      "Mem": 673636352
+    },
+    {
+      "Name": "pc-tbed-tpu-08018.cern.ch/kubelet",
+      "CPU": 0.039074583,
+      "Mem": 90963968
+    },
+    {
+      "Name": "pc-tbed-tpu-08018.cern.ch/pods",
+      "CPU": 0.312511978,
+      "Mem": 513384448
+    },
+    {
+      "Name": "pc-tbed-tpu-08019.cern.ch/kubelet",
+      "CPU": 0.07870934,
+      "Mem": 99160064
+    },
+    {
+      "Name": "pc-tbed-tpu-08019.cern.ch/pods",
+      "CPU": 0.563326115,
+      "Mem": 2095869952
+    },
+    {
+      "Name": "pc-tbed-tpu-08020.cern.ch/kubelet",
+      "CPU": 0.061120553,
+      "Mem": 94588928
+    },
+    {
+      "Name": "pc-tbed-tpu-08020.cern.ch/pods",
+      "CPU": 0.43507466,
+      "Mem": 1687789568
+    },
+    {
+      "Name": "pc-tbed-tpu-08021.cern.ch/kubelet",
+      "CPU": 0.044932966,
+      "Mem": 93241344
+    },
+    {
+      "Name": "pc-tbed-tpu-08021.cern.ch/pods",
+      "CPU": 0.071972804,
+      "Mem": 647061504
+    },
+    {
+      "Name": "pc-tbed-tpu-08022.cern.ch/kubelet",
+      "CPU": 0.039762733,
+      "Mem": 106287104
+    },
+    {
+      "Name": "pc-tbed-tpu-08022.cern.ch/pods",
+      "CPU": 0.196528548,
+      "Mem": 48514146304
+    },
+    {
+      "Name": "pc-tbed-tpu-08023.cern.ch/kubelet",
+      "CPU": 0.049855194,
+      "Mem": 95391744
+    },
+    {
+      "Name": "pc-tbed-tpu-08023.cern.ch/pods",
+      "CPU": 0.076307595,
+      "Mem": 500826112
+    },
+    {
+      "Name": "pc-tbed-tpu-08024.cern.ch/kubelet",
+      "CPU": 0.044734247,
+      "Mem": 95506432
+    },
+    {
+      "Name": "pc-tbed-tpu-08024.cern.ch/pods",
+      "CPU": 0.0910302,
+      "Mem": 623685632
+    },
+    {
+      "Name": "pc-tbed-tpu-08025.cern.ch/kubelet",
+      "CPU": 0.043448347,
+      "Mem": 111759360
+    },
+    {
+      "Name": "pc-tbed-tpu-08025.cern.ch/pods",
+      "CPU": 0.092541895,
+      "Mem": 488259584
+    },
+    {
+      "Name": "pc-tbed-tpu-08026.cern.ch/kubelet",
+      "CPU": 0.059359418,
+      "Mem": 92176384
+    },
+    {
+      "Name": "pc-tbed-tpu-08026.cern.ch/pods",
+      "CPU": 0.35691784,
+      "Mem": 683106304
+    },
+    {
+      "Name": "reflector-8495cc879-4cqzz/reflector",
+      "CPU": 0.002234576,
+      "Mem": 111562752
+    }
+  ]
+}
