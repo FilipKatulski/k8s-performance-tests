@@ -19,6 +19,10 @@ package slos
 import (
 	"context"
 	"fmt"
+
+	//--------------
+	"strings"
+	//--------------
 	"time"
 
 	corev1 "k8s.io/api/core/v1"
@@ -111,7 +115,7 @@ func (p *podStartupLatencyMeasurement) String() string {
 
 func (p *podStartupLatencyMeasurement) start(c clientset.Interface) error {
 	if p.isRunning {
-		klog.V(2).Infof("%s: pod startup latancy measurement already running", p)
+		klog.V(2).Infof("%s: pod startup latency measurement already running", p)
 		return nil
 	}
 	klog.V(2).Infof("%s: starting pod startup latency measurement...", p)
@@ -193,7 +197,7 @@ func (p *podStartupLatencyMeasurement) gather(c clientset.Interface, identifier 
 
 	checks := []podStartupLatencyCheck{
 		{
-			namePrefix: "",
+			namePrefix: "MatchAll",
 			filter:     measurementutil.MatchAll,
 		},
 		{
@@ -206,7 +210,10 @@ func (p *podStartupLatencyMeasurement) gather(c clientset.Interface, identifier 
 	var err error
 	for _, check := range checks {
 		transitions := podStartupTransitionsWithThreshold(p.threshold)
-		podStartupLatency := p.podStartupEntries.CalculateTransitionsLatency(transitions, check.filter)
+		//-------------
+		// Modified function, go to phase_latency.go compare with the original.
+		podStartupLatency := p.podStartupEntries.CalculateTransitionsLatencyForPodLatencyMeasurement(c, transitions, check.filter, check.namePrefix)
+		//-------------
 
 		if slosErr := podStartupLatency["pod_startup"].VerifyThreshold(p.threshold); slosErr != nil {
 			err = errors.NewMetricViolationError("pod startup", slosErr.Error())
@@ -233,8 +240,12 @@ func (p *podStartupLatencyMeasurement) gatherScheduleTimes(c clientset.Interface
 	if err != nil {
 		return err
 	}
+
 	for _, event := range schedEvents.Items {
-		key := createMetaNamespaceKey(event.InvolvedObject.Namespace, event.InvolvedObject.Name)
+		//------------
+		message := strings.Split(event.Message, " ")
+		key := createMetaNamespaceKeyWithNodename(event.InvolvedObject.Namespace, event.InvolvedObject.Name, message[len(message)-1])
+		//------------
 		if _, exists := p.podStartupEntries.Get(key, createPhase); exists {
 			if !event.EventTime.IsZero() {
 				p.podStartupEntries.Set(key, schedulePhase, event.EventTime.Time)
@@ -255,7 +266,7 @@ func (p *podStartupLatencyMeasurement) checkPod(_, obj interface{}) {
 		return
 	}
 
-	key := createMetaNamespaceKey(pod.Namespace, pod.Name)
+	key := createMetaNamespaceKeyWithNodename(pod.Namespace, pod.Name, pod.Spec.NodeName)
 	p.podMetadata.SetStateless(key, isPodStateless(pod))
 
 	if pod.Status.Phase == corev1.PodRunning {
@@ -279,9 +290,19 @@ func (p *podStartupLatencyMeasurement) checkPod(_, obj interface{}) {
 	}
 }
 
+//--------------
+// Left the original function jsut in case of more use cases for it.
+/*
 func createMetaNamespaceKey(namespace, name string) string {
 	return namespace + "/" + name
 }
+*/
+
+func createMetaNamespaceKeyWithNodename(namespace, name, nodename string) string {
+	return namespace + "/" + name + "/" + nodename
+}
+
+//--------------
 
 func isPodStateless(pod *corev1.Pod) bool {
 	for _, volume := range pod.Spec.Volumes {

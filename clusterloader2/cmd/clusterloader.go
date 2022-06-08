@@ -237,7 +237,7 @@ func printTestResult(name, status, errors string) {
 func main() {
 	//###########################################################################
 	f_timeline, _ := os.Create("timeline.csv")
-	s := fmt.Sprintf("Name,Transition,Pod,from,to,diff,from_unix,to_unix\n")
+	s := fmt.Sprintf("Name,Transition,Namespace/PodName,NodeName,pod_state_filter,diff,from_unix,to_unix\n")
 	_, _ = f_timeline.WriteString(s)
 	f_timeline.Close()
 	//###########################################################################
@@ -368,6 +368,7 @@ func main() {
 	if failedTestItems := testReporter.GetNumberOfFailedTestItems(); failedTestItems > 0 {
 		klog.Exitf("%d tests have failed!", failedTestItems)
 	}
+
 }
 
 func runSingleTest(ctx test.Context) {
