@@ -20,10 +20,15 @@ import (
 	"fmt"
 	"os"
 	"sort"
+	"strings"
 	"sync"
 	"time"
 
 	"k8s.io/klog"
+	//------------
+
+	clientset "k8s.io/client-go/kubernetes"
+	//------------
 )
 
 // Transition describe transition between two phases.
@@ -93,7 +98,7 @@ type KeyFilterFunc func(string) bool
 func MatchAll(_ string) bool { return true }
 
 // CalculateTransitionsLatency returns a latency map for given transitions.
-func (o *ObjectTransitionTimes) CalculateTransitionsLatency(t map[string]Transition, filter KeyFilterFunc) map[string]*LatencyMetric {
+func (o *ObjectTransitionTimes) CalculateTransitionsLatency(t map[string]Transition, filter KeyFilterFunc, filter_name string) map[string]*LatencyMetric {
 	o.lock.Lock()
 	defer o.lock.Unlock()
 	metric := make(map[string]*LatencyMetric)
@@ -103,11 +108,13 @@ func (o *ObjectTransitionTimes) CalculateTransitionsLatency(t map[string]Transit
 		klog.V(0).Infof("%s", err)
 	}
 	//#############
+
 	for name, transition := range t {
 		lag := make([]LatencyData, 0, len(o.times))
 		for key, transitionTimes := range o.times {
+
 			if !filter(key) {
-				klog.V(4).Infof("%s: filter doesn match key %s", o.name, key)
+				klog.V(4).Infof("%s: filter doesn't match key %s", o.name, key)
 				continue
 			}
 			fromPhaseTime, exists := transitionTimes[transition.From]
@@ -128,9 +135,12 @@ func (o *ObjectTransitionTimes) CalculateTransitionsLatency(t map[string]Transit
 			if latencyTime < 0 {
 				latencyTime = 0
 			}
+
 			//#############
 			lag = append(lag, latencyData{key: key, latency: latencyTime})
-			s := fmt.Sprintf("%s, %s, %s, %v, %v, %v, %v, %v\n", name, transition, key, fromPhaseTime, toPhaseTime, latencyTime.Milliseconds(), fromPhaseTime.Unix(), toPhaseTime.Unix())
+			//-------------
+			s := fmt.Sprintf("%s, %s, %s, %s, %v, %v, %v, %v, %v\n", name, transition, key, filter_name, fromPhaseTime, toPhaseTime, latencyTime.Milliseconds(), fromPhaseTime.Unix(), toPhaseTime.Unix())
+			//-------------
 			_, err = f_timeline.WriteString(s)
 			if err != nil {
 				klog.V(0).Infof("%s", err)
@@ -148,6 +158,75 @@ func (o *ObjectTransitionTimes) CalculateTransitionsLatency(t map[string]Transit
 	//#############
 	return metric
 }
+
+//-----------------
+// CalculateTransitionsLatencyForPodLatencyMeasurement returns a latency map for given transitions.
+// Used exlusively for Pod latency measurement, as it requires passing client Interface to access Pod's instances.
+func (o *ObjectTransitionTimes) CalculateTransitionsLatencyForPodLatencyMeasurement(client clientset.Interface, t map[string]Transition, filter KeyFilterFunc, filter_name string) map[string]*LatencyMetric {
+	o.lock.Lock()
+	defer o.lock.Unlock()
+	metric := make(map[string]*LatencyMetric)
+	//#############
+	f_timeline, err := os.OpenFile("timeline.csv", os.O_APPEND|os.O_WRONLY, 0644)
+	if err != nil {
+		klog.V(0).Infof("%s", err)
+	}
+	//#############
+
+	for name, transition := range t {
+		lag := make([]LatencyData, 0, len(o.times))
+		for key, transitionTimes := range o.times {
+			if !filter(key) {
+				klog.V(4).Infof("%s: filter doesn't match key %s", o.name, key)
+				continue
+			}
+			fromPhaseTime, exists := transitionTimes[transition.From]
+			if !exists {
+				klog.V(4).Infof("%s: failed to find %v time for %v", o.name, transition.From, key)
+				continue
+			}
+			toPhaseTime, exists := transitionTimes[transition.To]
+			if !exists {
+				klog.V(4).Infof("%s: failed to find %v time for %v", o.name, transition.To, key)
+				continue
+			}
+			latencyTime := toPhaseTime.Sub(fromPhaseTime)
+			// latencyTime should be always larger than zero, however, in some cases, it might be a
+			// negative value due to the precision of timestamp can only get to the level of second,
+			// the microsecond and nanosecond have been discarded purposely in kubelet, this is
+			// because apiserver does not support RFC339NANO.
+			if latencyTime < 0 {
+				latencyTime = 0
+			}
+
+			//#############
+			lag = append(lag, latencyData{key: key, latency: latencyTime})
+			//-------------
+			splitted := strings.Split(key, "/")
+			namespace_podname := splitted[0] + "/" + splitted[1]
+			nodename := splitted[len(splitted)-1]
+			s := fmt.Sprintf("%s, %s, %s, %s, %s, %v, %v, %v\n", name, transition, namespace_podname, nodename, filter_name, latencyTime.Milliseconds(), fromPhaseTime.Unix(), toPhaseTime.Unix())
+			//s := fmt.Sprintf("%s, %s, %s, %s, %v, %v, %v, %v, %v\n", name, transition, key, filter_name, fromPhaseTime, toPhaseTime, latencyTime.Milliseconds(), fromPhaseTime.Unix(), toPhaseTime.Unix())
+			//-------------
+			_, err = f_timeline.WriteString(s)
+			if err != nil {
+				klog.V(0).Infof("%s", err)
+			}
+			//#############
+		}
+
+		sort.Sort(LatencySlice(lag))
+		o.printLatencies(lag, fmt.Sprintf("worst %s latencies", name), transition.Threshold)
+		lagMetric := NewLatencyMetric(lag)
+		metric[name] = &lagMetric
+	}
+	//#############
+	f_timeline.Close()
+	//#############
+	return metric
+}
+
+//-----------------
 
 func (o *ObjectTransitionTimes) printLatencies(latencies []LatencyData, header string, threshold time.Duration) {
 	metrics := NewLatencyMetric(latencies)
