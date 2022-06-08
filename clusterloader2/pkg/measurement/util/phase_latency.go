@@ -139,10 +139,7 @@ func (o *ObjectTransitionTimes) CalculateTransitionsLatency(t map[string]Transit
 			//#############
 			lag = append(lag, latencyData{key: key, latency: latencyTime})
 			//-------------
-			splitted := strings.Split(key, "/")
-			namespace_podname := splitted[0] + "/" + splitted[1]
-			nodename := splitted[len(splitted)-1]
-			s := fmt.Sprintf("%s, %s, %s, %s, %s, %v, %v, %v\n", name, transition, namespace_podname, nodename, filter_name, latencyTime.Milliseconds(), fromPhaseTime.Unix(), toPhaseTime.Unix())
+			s := fmt.Sprintf("%s, %s, %s, %s, %v, %v, %v, %v, %v\n", name, transition, key, filter_name, fromPhaseTime, toPhaseTime, latencyTime.Milliseconds(), fromPhaseTime.Unix(), toPhaseTime.Unix())
 			//-------------
 			_, err = f_timeline.WriteString(s)
 			if err != nil {
@@ -204,7 +201,13 @@ func (o *ObjectTransitionTimes) CalculateTransitionsLatencyForPodLatencyMeasurem
 
 			//#############
 			lag = append(lag, latencyData{key: key, latency: latencyTime})
-			s := fmt.Sprintf("%s, %s, %s, %s, %v, %v, %v, %v, %v\n", name, transition, key, filter_name, fromPhaseTime, toPhaseTime, latencyTime.Milliseconds(), fromPhaseTime.Unix(), toPhaseTime.Unix())
+			//-------------
+			splitted := strings.Split(key, "/")
+			namespace_podname := splitted[0] + "/" + splitted[1]
+			nodename := splitted[len(splitted)-1]
+			s := fmt.Sprintf("%s, %s, %s, %s, %s, %v, %v, %v\n", name, transition, namespace_podname, nodename, filter_name, latencyTime.Milliseconds(), fromPhaseTime.Unix(), toPhaseTime.Unix())
+			//s := fmt.Sprintf("%s, %s, %s, %s, %v, %v, %v, %v, %v\n", name, transition, key, filter_name, fromPhaseTime, toPhaseTime, latencyTime.Milliseconds(), fromPhaseTime.Unix(), toPhaseTime.Unix())
+			//-------------
 			_, err = f_timeline.WriteString(s)
 			if err != nil {
 				klog.V(0).Infof("%s", err)
