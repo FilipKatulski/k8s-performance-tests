@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"reflect"
 	"strconv"
 	"strings"
 
@@ -133,11 +134,43 @@ func plotTimeline(dat []TimelineData, PodStateFilterSelector string) {
 	)
 	fmt.Println(dataDf)
 
-	createdDf := dataDf.Filter(
+	selectedDf := dataDf.Filter(
 		dataframe.F{Colname: "Transition", Comparator: series.Eq, Comparando: "{create schedule 0s}"},
 	)
 
-	fmt.Println(createdDf)
+	selectedDf = selectedDf.Select([]string{"FromUnix"})
+
+	minimalVal := selectedDf.Elem(0, 0)
+	fmt.Println(minimalVal, reflect.TypeOf(minimalVal))
+
+	s := selectedDf.Rapply(func(s series.Series) series.Series {
+		deposit, err := s.Elem(0).Int()
+		if err != nil {
+			return series.Ints("NAN")
+		}
+		withdrawal, err := minimalVal.Int()
+		if err != nil {
+			return series.Ints("NAN")
+		}
+		return series.Ints(deposit - withdrawal)
+	})
+
+	df := selectedDf.Mutate(s.Col("X0")).Rename("time_diff", "X0")
+
+	fmt.Println(df)
+
+	groupedDf := df.GroupBy("FromUnix")
+
+	groups := groupedDf.GetGroups()
+	fmt.Println("GROUPS:")
+	fmt.Println(groups)
+	for _, elem := range groups {
+		elemInteg, _ := elem.Elem(0, 0).Int()
+		fmt.Println(elem.Elem(0, 0), reflect.TypeOf(elem.Elem(0, 0)))
+		fmt.Println(elemInteg, reflect.TypeOf(elemInteg))
+		fmt.Println(elem.Nrow())
+	}
+
 }
 
 func plotHistograms(dat []TimelineData) {

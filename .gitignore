@@ -1,2 +1,4 @@
 *.icloud
 env
+.idea
+notes
