@@ -12,9 +12,7 @@ import (
 
 	"github.com/go-gota/gota/dataframe"
 	"github.com/go-gota/gota/series"
-	//"gonum.org/v1/plot"
-	//"gonum.org/v1/plot/plotter"
-	//"gonum.org/v1/plot/vg"
+	"gonum.org/v1/plot"
 )
 
 var (
@@ -164,17 +162,53 @@ func plotTimeline(dat []TimelineData, PodStateFilterSelector string) {
 	groups := groupedDf.GetGroups()
 	fmt.Println("GROUPS:")
 	fmt.Println(groups)
+
+	var values [2][]int
+
 	for _, elem := range groups {
 		elemInteg, _ := elem.Elem(0, 0).Int()
 		fmt.Println(elem.Elem(0, 0), reflect.TypeOf(elem.Elem(0, 0)))
 		fmt.Println(elemInteg, reflect.TypeOf(elemInteg))
 		fmt.Println(elem.Nrow())
+		timeInteg, _ := elem.Elem(0, 1).Int()
+		values[0] = append(values[0], timeInteg)
+		values[1] = append(values[1], elem.Nrow())
 	}
 
+	fmt.Println(values[0])
+	fmt.Println(values[1])
+	fmt.Println(values)
+
+	err := plotData("created.png", values)
+	if err != nil {
+		log.Fatalf("could not plot the data: %v", err)
+	}
 }
 
 func plotHistograms(dat []TimelineData) {
 	fmt.Println("TODO: Histograms")
+}
+
+func plotData(path string, xy [2][]int) error {
+	f, err := os.Create(path)
+	if err != nil {
+		return fmt.Errorf("could not create %s.png file: %v", path, err)
+	}
+	defer f.Close()
+
+	p := plot.New()
+
+	wt, err := p.WriterTo(512, 512, "png")
+	if err != nil {
+		return fmt.Errorf("could not create writer: %v", err)
+	}
+
+	_, err = wt.WriteTo(f)
+	if err != nil {
+		return fmt.Errorf("could not write plot to file: %v", err)
+	}
+
+	return nil
 }
 
 func initFlags() {

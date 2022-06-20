@@ -192,9 +192,6 @@ create_to_schedule, {create schedule 0s}, test-thug0b-1/latency-deployment-0-5f6
 create_to_schedule, {create schedule 0s}, test-thug0b-1/latency-deployment-0-5f6455489f-ppj48, pc-tbed-tpu-08017.cern.ch, Stateless, 1000, 1654680047, 1654680048
 create_to_schedule, {create schedule 0s}, test-thug0b-1/latency-deployment-0-5f6455489f-4xtjc, pc-tbed-tpu-08017.cern.ch, Stateless, 1000, 1654680047, 1654680048
 create_to_schedule, {create schedule 0s}, test-thug0b-1/latency-deployment-0-5f6455489f-lvc6v, pc-tbed-tpu-08021.cern.ch, Stateless, 1000, 1654680047, 1654680048
-create_to_schedule, {create schedule 0s}, test-thug0b-1/latency-deployment-0-5f6455489f-9mqmx, pc-tbed-tpu-08020.cern.ch, Stateless, 0, 1654680048, 1654680048
-create_to_schedule, {create schedule 0s}, test-thug0b-1/latency-deployment-0-5f6455489f-7lmnl, pc-tbed-tpu-08020.cern.ch, Stateless, 0, 1654680048, 1654680048
-create_to_schedule, {create schedule 0s}, test-thug0b-1/latency-deployment-0-5f6455489f-r7h8c, pc-tbed-tpu-08020.cern.ch, Stateless, 0, 1654680048, 1654680048
 create_to_schedule, {create schedule 0s}, test-thug0b-1/latency-deployment-0-5f6455489f-9k4mt, pc-tbed-k8s-02.cern.ch, Stateless, 0, 1654680048, 1654680048
 create_to_schedule, {create schedule 0s}, test-thug0b-1/latency-deployment-0-5f6455489f-cpw6f, pc-tbed-k8s-01.cern.ch, Stateless, 1000, 1654680047, 1654680048
 create_to_schedule, {create schedule 0s}, test-thug0b-1/latency-deployment-0-5f6455489f-t9wdt, pc-tbed-k8s-01.cern.ch, Stateless, 0, 1654680048, 1654680048

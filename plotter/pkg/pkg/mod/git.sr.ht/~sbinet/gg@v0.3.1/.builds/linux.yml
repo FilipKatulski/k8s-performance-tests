@@ -1,0 +1,27 @@
+# SPDX-License-Identifier: Unlicense OR MIT
+image: debian/testing
+sources:
+ - https://git.sr.ht/~sbinet/gg
+environment:
+ GOFLAGS: -mod=readonly
+ PATH: /home/build/sdk/go/bin:/usr/bin:/home/build/go/bin
+tasks:
+ - install_go1_17: |
+     mkdir -p /home/build/sdk
+     curl -L https://golang.org/dl/go1.17.linux-amd64.tar.gz | tar -C /home/build/sdk -xzf -
+ - test_linux: |
+     cd gg
+     go test -race ./...
+ - check_gofmt: |
+     cd gg
+     test -z "$(gofmt -s -l .)"
+ - check_sign_off: |
+     set +x -e
+     cd gg
+     for hash in $(git log -n 5 --format="%H"); do
+        message=$(git log -1 --format=%B $hash)
+        if [[ ! "$message" =~ "Signed-off-by: " ]]; then
+            echo "Missing 'Signed-off-by' in commit $hash"
+            exit 1
+        fi
+     done
