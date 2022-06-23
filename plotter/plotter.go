@@ -99,13 +99,12 @@ out:
 	for _, t := range plots {
 		switch t {
 		case "all":
-			fmt.Println("Implement all")
 			plotTimeline(data, "Stateless")
-			plotHistograms(data)
+			plotHistograms(data, "Stateless")
 			break out
 		case "histograms":
 			fmt.Println("Implement histograms")
-			plotHistograms(data)
+			plotHistograms(data, "Stateless")
 		case "timeline":
 			fmt.Println("Implement timeline")
 			plotTimeline(data, "Stateless")
@@ -223,7 +222,7 @@ func addNewTimeLine(lineName string, p *plot.Plot, dataPoints DataForPlotting) {
 		pxys[i].Y = elem.numOfElems
 	}
 
-	fmt.Println("PXYS", pxys)
+	fmt.Println("XYs of ", lineName, ": ", pxys)
 
 	line, err := plotter.NewLine(pxys)
 	if err != nil {
@@ -237,7 +236,6 @@ func addNewTimeLine(lineName string, p *plot.Plot, dataPoints DataForPlotting) {
 		A: 255}
 	p.Add(line)
 	p.Legend.Add(lineName, line)
-
 }
 
 func createTimelinePlot(path string, created DataForPlotting, scheduled DataForPlotting, run DataForPlotting, watch DataForPlotting) error {
@@ -246,6 +244,8 @@ func createTimelinePlot(path string, created DataForPlotting, scheduled DataForP
 		return fmt.Errorf("could not create %s.png file: %v", path, err)
 	}
 	defer f.Close()
+
+	fmt.Println("Creating Timeline plot: ")
 
 	p := plot.New()
 	p.Title.Text = "Timeline"
@@ -257,7 +257,7 @@ func createTimelinePlot(path string, created DataForPlotting, scheduled DataForP
 	addNewTimeLine("Run", p, run)
 	addNewTimeLine("Watch", p, watch)
 
-	wt, err := p.WriterTo(512, 512, "png")
+	wt, err := p.WriterTo(1024, 512, "png")
 	if err != nil {
 		return fmt.Errorf("could not create writer: %v", err)
 	}
@@ -270,9 +270,59 @@ func createTimelinePlot(path string, created DataForPlotting, scheduled DataForP
 	return nil
 }
 
-func plotHistograms(dat []TimelineData) {
-	fmt.Println("TODO: Histograms")
+func plotHistograms(dat []TimelineData, PodStateFilterSelector string) {
+	fmt.Println("TODO: Implement Histograms. ")
+	dataDf := dataframe.LoadStructs(dat)
+	dataDf = dataDf.Filter(
+		dataframe.F{Colname: "PodStateFilter", Comparator: series.Eq, Comparando: PodStateFilterSelector},
+	)
+	CreatedDf := dataDf.Filter(
+		dataframe.F{Colname: "Transition", Comparator: series.Eq, Comparando: "{create schedule 0s}"},
+	)
+	CreatedDf = CreatedDf.Arrange(dataframe.Sort("FromUnix"))
+	fmt.Println(CreatedDf)
+	minimalVal, _ := CreatedDf.Elem(0, 6).Int()
 
+	CreatedDf = CreatedDf.Select([]string{"Difference"})
+	CreatedDf = CreatedDf.Arrange(dataframe.Sort("Difference"))
+
+	fmt.Println("CreatedDf: ", CreatedDf)
+	fmt.Println("minimalval: ", minimalVal)
+
+	ScheduledDf := dataDf.Filter(
+		dataframe.F{Colname: "Transition", Comparator: series.Eq, Comparando: "{create schedule 0s}"},
+	)
+	ScheduledDf = ScheduledDf.Select([]string{"Difference"})
+	ScheduledDf = ScheduledDf.Arrange(dataframe.Sort("Difference"))
+
+	fmt.Println("ScheduledDf: ", ScheduledDf)
+
+}
+
+func createHistogramPlot(path string, data DataForPlotting) error {
+	f, err := os.Create(path)
+	if err != nil {
+		return fmt.Errorf("could not create %s.png file: %v", path, err)
+	}
+	defer f.Close()
+
+	//TODO: Mieso
+	p := plot.New()
+	p.Title.Text = "Histogram"
+	p.X.Label.Text = "Time"
+	p.Y.Label.Text = "Number of Pods"
+
+	wt, err := p.WriterTo(1024, 512, "png")
+	if err != nil {
+		return fmt.Errorf("could not create writer: %v", err)
+	}
+
+	_, err = wt.WriteTo(f)
+	if err != nil {
+		return fmt.Errorf("could not write plot to file: %v", err)
+	}
+
+	return nil
 }
 
 func initFlags() {
