@@ -8,7 +8,7 @@ import (
 	"log"
 	"math/rand"
 	"os"
-	"reflect"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -115,9 +115,11 @@ out:
 	}
 }
 
-type DataForPlotting struct {
-	timeStamp  []float64
-	numOfElems []float64
+type DataForPlotting []DataPoint
+
+type DataPoint struct {
+	timeStamp  float64
+	numOfElems float64
 }
 
 func plotTimeline(dat []TimelineData, PodStateFilterSelector string) {
@@ -132,43 +134,35 @@ func plotTimeline(dat []TimelineData, PodStateFilterSelector string) {
 
 	CreatedDf = CreatedDf.Select([]string{"FromUnix"})
 	CreatedDf = CreatedDf.Arrange(dataframe.Sort("FromUnix"))
-	createdMinimalVal, _ := CreatedDf.Elem(0, 0).Int()
-
-	fmt.Println("createdDf", reflect.TypeOf(CreatedDf))
-	fmt.Println("createdMinimalVal", reflect.TypeOf(createdMinimalVal))
+	minimalVal, _ := CreatedDf.Elem(0, 0).Int()
 
 	ScheduledDf := dataDf.Filter(
 		dataframe.F{Colname: "Transition", Comparator: series.Eq, Comparando: "{create schedule 0s}"},
 	)
 	ScheduledDf = ScheduledDf.Select([]string{"ToUnix"})
 	ScheduledDf = ScheduledDf.Arrange(dataframe.Sort("ToUnix"))
-	scheduledMinimalVal, _ := ScheduledDf.Elem(0, 0).Int()
-	fmt.Println(ScheduledDf)
-	fmt.Println("MinimalvalScheduled: ", scheduledMinimalVal)
 
 	RunDf := dataDf.Filter(
 		dataframe.F{Colname: "Transition", Comparator: series.Eq, Comparando: "{schedule run 0s}"},
 	)
 	RunDf = RunDf.Select([]string{"ToUnix"})
 	RunDf = RunDf.Arrange(dataframe.Sort("ToUnix"))
-	runMinimalVal, _ := RunDf.Elem(0, 0).Int()
 
 	WatchedDf := dataDf.Filter(
 		dataframe.F{Colname: "Transition", Comparator: series.Eq, Comparando: "{run watch 0s}"},
 	)
 	WatchedDf = WatchedDf.Select([]string{"ToUnix"})
 	WatchedDf = WatchedDf.Arrange(dataframe.Sort("ToUnix"))
-	watchedMinimalVal, _ := WatchedDf.Elem(0, 0).Int()
 
-	createdGroups := parseDf(&CreatedDf, createdMinimalVal, "FromUnix")
-	schedulerGroups := parseDf(&ScheduledDf, scheduledMinimalVal, "ToUnix")
-	runGroups := parseDf(&RunDf, runMinimalVal, "ToUnix")
-	watchGroups := parseDf(&WatchedDf, watchedMinimalVal, "ToUnix")
+	createdGroups := parseDf(&CreatedDf, minimalVal, "FromUnix")
+	schedulerGroups := parseDf(&ScheduledDf, minimalVal, "ToUnix")
+	runGroups := parseDf(&RunDf, minimalVal, "ToUnix")
+	watchGroups := parseDf(&WatchedDf, minimalVal, "ToUnix")
 
-	createdValues := createDataForPlotting(createdGroups)
-	scheduledValues := createDataForPlotting(schedulerGroups)
-	runValues := createDataForPlotting(runGroups)
-	watchValues := createDataForPlotting(watchGroups)
+	createdValues := createDataForTimelinePlotting(createdGroups)
+	scheduledValues := createDataForTimelinePlotting(schedulerGroups)
+	runValues := createDataForTimelinePlotting(runGroups)
+	watchValues := createDataForTimelinePlotting(watchGroups)
 
 	err := createTimelinePlot("timeline.png", createdValues, scheduledValues, runValues, watchValues)
 	if err != nil {
@@ -188,42 +182,45 @@ func parseDf(df *dataframe.DataFrame, minVal int, groupingCol string) map[string
 
 	mutatedDf := df.Mutate(s.Col("X0")).Rename("Z", "X0")
 
-	fmt.Println(mutatedDf)
 	groupedDf := mutatedDf.GroupBy(groupingCol)
 
 	groups := groupedDf.GetGroups()
-	fmt.Println("groups: ", groups)
 	return groups
 }
 
-func createDataForPlotting(groups map[string]dataframe.DataFrame) DataForPlotting {
+func createDataForTimelinePlotting(groups map[string]dataframe.DataFrame) DataForPlotting {
 	var values DataForPlotting
 
 	for _, elem := range groups {
+		var dp DataPoint
+
 		timeInteg := elem.Elem(0, 1).Float()
-		values.timeStamp = append(values.timeStamp, timeInteg)
-		values.numOfElems = append(values.numOfElems, float64(elem.Nrow()))
-	}
-	for i := 1; i < len(values.numOfElems); i++ {
-		values.numOfElems[i] += values.numOfElems[i-1]
+		dp.timeStamp = timeInteg
+		dp.numOfElems = float64(elem.Nrow())
+
+		values = append(values, dp)
 	}
 
-	fmt.Println(values.timeStamp)
-	fmt.Println(values.numOfElems)
+	sort.SliceStable(values, func(i, j int) bool {
+		return values[i].timeStamp < values[j].timeStamp
+	})
+
+	for i := 1; i < len(values); i++ {
+		values[i].numOfElems += values[i-1].numOfElems
+	}
 
 	return values
 }
 
-func addPlotLine(lineName string, p *plot.Plot, dataPoints DataForPlotting) {
+func addNewTimeLine(lineName string, p *plot.Plot, dataPoints DataForPlotting) {
 
-	pxys := make(plotter.XYs, len(dataPoints.numOfElems))
+	pxys := make(plotter.XYs, len(dataPoints))
 
-	for j, elem := range dataPoints.timeStamp {
-		pxys[j].X = elem
+	for j, elem := range dataPoints {
+		pxys[j].X = elem.timeStamp
 	}
-	for i, elem := range dataPoints.numOfElems {
-		fmt.Println(elem)
-		pxys[i].Y = elem
+	for i, elem := range dataPoints {
+		pxys[i].Y = elem.numOfElems
 	}
 
 	fmt.Println("PXYS", pxys)
@@ -253,12 +250,12 @@ func createTimelinePlot(path string, created DataForPlotting, scheduled DataForP
 	p := plot.New()
 	p.Title.Text = "Timeline"
 	p.X.Label.Text = "Time [s]"
-	p.Y.Label.Text = "number of Pods"
+	p.Y.Label.Text = "Number of Pods"
 
-	addPlotLine("Created", p, created)
-	addPlotLine("Scheduled", p, scheduled)
-	addPlotLine("Run", p, run)
-	addPlotLine("Watch", p, watch)
+	addNewTimeLine("Created", p, created)
+	addNewTimeLine("Scheduled", p, scheduled)
+	addNewTimeLine("Run", p, run)
+	addNewTimeLine("Watch", p, watch)
 
 	wt, err := p.WriterTo(512, 512, "png")
 	if err != nil {
@@ -275,6 +272,7 @@ func createTimelinePlot(path string, created DataForPlotting, scheduled DataForP
 
 func plotHistograms(dat []TimelineData) {
 	fmt.Println("TODO: Histograms")
+
 }
 
 func initFlags() {
