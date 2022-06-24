@@ -153,10 +153,10 @@ func plotTimeline(dat []TimelineData, PodStateFilterSelector string) {
 	WatchedDf = WatchedDf.Select([]string{"ToUnix"})
 	WatchedDf = WatchedDf.Arrange(dataframe.Sort("ToUnix"))
 
-	createdGroups := parseDf(&CreatedDf, minimalVal, "FromUnix")
-	schedulerGroups := parseDf(&ScheduledDf, minimalVal, "ToUnix")
-	runGroups := parseDf(&RunDf, minimalVal, "ToUnix")
-	watchGroups := parseDf(&WatchedDf, minimalVal, "ToUnix")
+	createdGroups := parseTimelineDf(&CreatedDf, minimalVal, "FromUnix")
+	schedulerGroups := parseTimelineDf(&ScheduledDf, minimalVal, "ToUnix")
+	runGroups := parseTimelineDf(&RunDf, minimalVal, "ToUnix")
+	watchGroups := parseTimelineDf(&WatchedDf, minimalVal, "ToUnix")
 
 	createdValues := createDataForTimelinePlotting(createdGroups)
 	scheduledValues := createDataForTimelinePlotting(schedulerGroups)
@@ -169,7 +169,7 @@ func plotTimeline(dat []TimelineData, PodStateFilterSelector string) {
 	}
 }
 
-func parseDf(df *dataframe.DataFrame, minVal int, groupingCol string) map[string]dataframe.DataFrame {
+func parseTimelineDf(df *dataframe.DataFrame, minVal int, groupingCol string) map[string]dataframe.DataFrame {
 
 	s := df.Rapply(func(s series.Series) series.Series {
 		deposit, err := s.Elem(0).Int()
@@ -276,41 +276,95 @@ func plotHistograms(dat []TimelineData, PodStateFilterSelector string) {
 	dataDf = dataDf.Filter(
 		dataframe.F{Colname: "PodStateFilter", Comparator: series.Eq, Comparando: PodStateFilterSelector},
 	)
-	CreatedDf := dataDf.Filter(
-		dataframe.F{Colname: "Transition", Comparator: series.Eq, Comparando: "{create schedule 0s}"},
+
+	//Transition from Create to Schedule
+	createToScheduleDf := dataDf.Filter(
+		dataframe.F{Colname: "Transition", Comparator: series.Eq, Comparando: "{create schedule 0s}"})
+	createToScheduleDf = createToScheduleDf.Select([]string{"Difference"})
+	createToScheduleDf = createToScheduleDf.Arrange(dataframe.Sort("Difference"))
+	createToScheduleValues := createDataForHistogramPlotting(parseHistogramDf(&createToScheduleDf))
+	err := createHistogramPlot("createtoschedule-hist.png", "{create schedule 0s}", createToScheduleValues)
+	if err != nil {
+		log.Fatalf("could not plot the data: %v", err)
+	}
+
+	//Transition from Schedule to Run
+	scheduleToRunDf := dataDf.Filter(
+		dataframe.F{Colname: "Transition", Comparator: series.Eq, Comparando: "{schedule run 0s}"},
 	)
-	CreatedDf = CreatedDf.Arrange(dataframe.Sort("FromUnix"))
-	fmt.Println(CreatedDf)
-	minimalVal, _ := CreatedDf.Elem(0, 6).Int()
+	scheduleToRunDf = scheduleToRunDf.Select([]string{"Difference"})
+	scheduleToRunDf = scheduleToRunDf.Arrange(dataframe.Sort("Difference"))
+	scheduleToRunValues := createDataForHistogramPlotting(parseHistogramDf(&scheduleToRunDf))
+	err = createHistogramPlot("scheduletorun-hist.png", "{schedule run 0s}", scheduleToRunValues)
+	if err != nil {
+		log.Fatalf("could not plot the data: %v", err)
+	}
 
-	CreatedDf = CreatedDf.Select([]string{"Difference"})
-	CreatedDf = CreatedDf.Arrange(dataframe.Sort("Difference"))
-
-	fmt.Println("CreatedDf: ", CreatedDf)
-	fmt.Println("minimalval: ", minimalVal)
-
-	ScheduledDf := dataDf.Filter(
-		dataframe.F{Colname: "Transition", Comparator: series.Eq, Comparando: "{create schedule 0s}"},
+	//Transition from Run to Watch
+	runToWatchDf := dataDf.Filter(
+		dataframe.F{Colname: "Transition", Comparator: series.Eq, Comparando: "{run watch 0s}"},
 	)
-	ScheduledDf = ScheduledDf.Select([]string{"Difference"})
-	ScheduledDf = ScheduledDf.Arrange(dataframe.Sort("Difference"))
+	runToWatchDf = runToWatchDf.Select([]string{"Difference"})
+	runToWatchDf = runToWatchDf.Arrange(dataframe.Sort("Difference"))
+	runToWatchValues := createDataForHistogramPlotting(parseHistogramDf(&runToWatchDf))
+	err = createHistogramPlot("runtowatch-hist.png", "{run watch 0s}", runToWatchValues)
+	if err != nil {
+		log.Fatalf("could not plot the data: %v", err)
+	}
 
-	fmt.Println("ScheduledDf: ", ScheduledDf)
-
+	//Transition from Create to Watch
+	createToWatchDf := dataDf.Filter(
+		dataframe.F{Colname: "Transition", Comparator: series.Eq, Comparando: "{create watch 5s}"},
+	)
+	createToWatchDf = createToWatchDf.Select([]string{"Difference"})
+	createToWatchDf = createToWatchDf.Arrange(dataframe.Sort("Difference"))
+	createToWatchValues := createDataForHistogramPlotting(parseHistogramDf(&createToWatchDf))
+	err = createHistogramPlot("createtowatch-hist.png", "{create to watch 5s}", createToWatchValues)
+	if err != nil {
+		log.Fatalf("could not plot the data: %v", err)
+	}
 }
 
-func createHistogramPlot(path string, data DataForPlotting) error {
+func parseHistogramDf(df *dataframe.DataFrame) map[string]dataframe.DataFrame {
+
+	groupedDf := df.GroupBy("Difference")
+
+	groups := groupedDf.GetGroups()
+	return groups
+}
+
+func createDataForHistogramPlotting(groups map[string]dataframe.DataFrame) DataForPlotting {
+	var values DataForPlotting
+
+	for _, elem := range groups {
+		var dp DataPoint
+
+		timeInteg := elem.Elem(0, 0).Float()
+		dp.timeStamp = timeInteg
+		dp.numOfElems = float64(elem.Nrow())
+
+		values = append(values, dp)
+	}
+
+	sort.SliceStable(values, func(i, j int) bool {
+		return values[i].timeStamp < values[j].timeStamp
+	})
+
+	return values
+}
+
+func createHistogramPlot(path string, histogramName string, data DataForPlotting) error {
 	f, err := os.Create(path)
 	if err != nil {
 		return fmt.Errorf("could not create %s.png file: %v", path, err)
 	}
 	defer f.Close()
 
-	//TODO: Mieso
 	p := plot.New()
-	p.Title.Text = "Histogram"
 	p.X.Label.Text = "Time"
 	p.Y.Label.Text = "Number of Pods"
+
+	addHistogram(histogramName, p, data)
 
 	wt, err := p.WriterTo(1024, 512, "png")
 	if err != nil {
@@ -323,6 +377,26 @@ func createHistogramPlot(path string, data DataForPlotting) error {
 	}
 
 	return nil
+}
+
+func addHistogram(histogramName string, p *plot.Plot, dataPoints DataForPlotting) {
+	pxys := make(plotter.XYs, len(dataPoints))
+
+	binsNumber := 200
+
+	for j, elem := range dataPoints {
+		pxys[j].X = elem.timeStamp
+	}
+	for i, elem := range dataPoints {
+		pxys[i].Y = elem.numOfElems
+	}
+
+	hist, err := plotter.NewHistogram(pxys, binsNumber)
+	if err != nil {
+		log.Fatalf("could not add new line %s: %v", histogramName, err)
+	}
+	p.Add(hist)
+	p.Title.Text = "\"" + histogramName + "\" histogram"
 }
 
 func initFlags() {
