@@ -8,10 +8,12 @@ import (
 	"log"
 	"math/rand"
 	"os"
+	"path/filepath"
 	"sort"
 	"strconv"
 	"strings"
 
+	"github.com/benoitmasson/plotters/piechart"
 	"github.com/go-gota/gota/dataframe"
 	"github.com/go-gota/gota/series"
 	"gonum.org/v1/plot"
@@ -19,9 +21,10 @@ import (
 )
 
 var (
-	path_to_file string
-	filepath     string
+	timelinefile string
+	outputpath   string
 	plots        string
+	podstate     string
 	additional   string
 )
 
@@ -93,23 +96,34 @@ func parseDataFile(path string) ([]TimelineData, error) {
 	return timelineData, nil
 }
 
-func plotTypeSelection(plotlist string, data []TimelineData) {
+func plotTypeSelection(plotlist string, podstate string, data []TimelineData) {
 	plots := strings.Split(plotlist, ",")
+	if podstate == "stateless" {
+		podstate = "Stateless"
+	} else if podstate == "stateful" {
+		podstate = "Stateful"
+	} else if podstate == "matchall" {
+		podstate = "MatchAll"
+	}
+
 out:
 	for _, t := range plots {
 		switch t {
 		case "all":
-			plotTimeline(data, "Stateless")
-			plotHistograms(data, "Stateless")
+			plotTimeline(data, podstate)
+			plotHistograms(data, podstate)
+			plotPieChart(data, podstate)
 			break out
 		case "histograms":
-			fmt.Println("Implement histograms")
-			plotHistograms(data, "Stateless")
+			plotHistograms(data, podstate)
 		case "timeline":
-			fmt.Println("Implement timeline")
-			plotTimeline(data, "Stateless")
+			plotTimeline(data, podstate)
+		case "piechart":
+			fmt.Println("Implement Pie Chart. ")
+			plotPieChart(data, podstate)
 		default:
 			fmt.Printf("Plot type '%s' is not implemented.\n", t)
+			break out
 		}
 	}
 }
@@ -238,7 +252,12 @@ func addNewTimeLine(lineName string, p *plot.Plot, dataPoints DataForPlotting) {
 	p.Legend.Add(lineName, line)
 }
 
-func createTimelinePlot(path string, created DataForPlotting, scheduled DataForPlotting, run DataForPlotting, watch DataForPlotting) error {
+func createTimelinePlot(filename string, created DataForPlotting, scheduled DataForPlotting, run DataForPlotting, watch DataForPlotting) error {
+	path := filepath.Join(outputpath, filename)
+	err := os.MkdirAll(outputpath, 0744)
+	if err != nil {
+		return fmt.Errorf("could not directory %s: %v", outputpath, err)
+	}
 	f, err := os.Create(path)
 	if err != nil {
 		return fmt.Errorf("could not create %s.png file: %v", path, err)
@@ -271,7 +290,6 @@ func createTimelinePlot(path string, created DataForPlotting, scheduled DataForP
 }
 
 func plotHistograms(dat []TimelineData, PodStateFilterSelector string) {
-	fmt.Println("TODO: Implement Histograms. ")
 	dataDf := dataframe.LoadStructs(dat)
 	dataDf = dataDf.Filter(
 		dataframe.F{Colname: "PodStateFilter", Comparator: series.Eq, Comparando: PodStateFilterSelector},
@@ -353,7 +371,12 @@ func createDataForHistogramPlotting(groups map[string]dataframe.DataFrame) DataF
 	return values
 }
 
-func createHistogramPlot(path string, histogramName string, data DataForPlotting) error {
+func createHistogramPlot(filename string, histogramName string, data DataForPlotting) error {
+	path := filepath.Join(outputpath, filename)
+	err := os.MkdirAll(outputpath, 0744)
+	if err != nil {
+		return fmt.Errorf("could not directory %s: %v", outputpath, err)
+	}
 	f, err := os.Create(path)
 	if err != nil {
 		return fmt.Errorf("could not create %s.png file: %v", path, err)
@@ -399,8 +422,69 @@ func addHistogram(histogramName string, p *plot.Plot, dataPoints DataForPlotting
 	p.Title.Text = "\"" + histogramName + "\" histogram"
 }
 
+func plotPieChart(dat []TimelineData, PodStateFilterSelector string) {
+	fmt.Println("TODO: Implement Pie Chart ")
+
+	dataDf := dataframe.LoadStructs(dat)
+	dataDf = dataDf.Filter(
+		dataframe.F{Colname: "PodStateFilter", Comparator: series.Eq, Comparando: PodStateFilterSelector},
+	)
+
+	//Transition from Create to Schedule
+	createToScheduleDf := dataDf.Filter(
+		dataframe.F{Colname: "Transition", Comparator: series.Eq, Comparando: "{create schedule 0s}"})
+	createToScheduleDf = createToScheduleDf.Select([]string{"Difference"})
+	createToScheduleDf = createToScheduleDf.Arrange(dataframe.Sort("Difference"))
+
+	// TODO: Get cumulative count of values in "Difference" columns per each "Transition".
+
+}
+
+func parsePieChartData() {
+
+}
+
+func createPieChartPlot(filename string, histogramName string, data DataForPlotting) error {
+	path := filepath.Join(outputpath, filename)
+	err := os.MkdirAll(outputpath, 0744)
+	if err != nil {
+		return fmt.Errorf("could not directory %s: %v", outputpath, err)
+	}
+	f, err := os.Create(path)
+	if err != nil {
+		return fmt.Errorf("could not create %s.png file: %v", path, err)
+	}
+	defer f.Close()
+
+	p := plot.New()
+	p.HideAxes()
+
+	pie, err := piechart.NewPieChart()
+	if err != nil {
+		return fmt.Errorf("could not create pie chart slice %s: %v", pie, err)
+	}
+
+	wt, err := p.WriterTo(1024, 512, "png")
+	if err != nil {
+		return fmt.Errorf("could not create writer: %v", err)
+	}
+
+	_, err = wt.WriteTo(f)
+	if err != nil {
+		return fmt.Errorf("could not write plot to file: %v", err)
+	}
+
+	return nil
+}
+
+func addPieChart(piechartName string, p *plot.Plot, data DataForPlotting) {
+
+}
+
 func initFlags() {
-	flag.StringVar(&filepath, "filepath", "", "Specify path to the timeline file ")
+	flag.StringVar(&timelinefile, "filepath", "", "Specify the path to the timeline CSV file. ")
+	flag.StringVar(&outputpath, "outputpath", ".", "Specify the path for the output PNG files. ")
+	flag.StringVar(&podstate, "podstate", "Stateless", "Specify the state of Pods. ")
 	flag.StringVar(&plots, "plots", "all", "Specify types of plots, separate with ',' ")
 	flag.StringVar(&additional, "additional", "", "Specify additional parameteres for plotting, separate with ',' ")
 	flag.Parse()
@@ -410,11 +494,11 @@ func main() {
 	displayHeader()
 	initFlags()
 
-	data, err := parseDataFile(filepath)
+	data, err := parseDataFile(timelinefile)
 	if err != nil {
-		log.Fatalf("Could not read file %s: %v", path_to_file, err)
+		log.Fatalf("Could not read file %s: %v", timelinefile, err)
 	}
 
-	plotTypeSelection(plots, data)
+	plotTypeSelection(plots, podstate, data)
 
 }
