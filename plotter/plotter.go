@@ -28,6 +28,17 @@ var (
 	additional   string
 )
 
+//go:generate stringer -type=AggregationType -linecomment
+const (
+	Aggregation_MAX    dataframe.AggregationType = iota + 1 // MAX
+	Aggregation_MIN                                         // MIN
+	Aggregation_MEAN                                        // MEAN
+	Aggregation_MEDIAN                                      // MEDIAN
+	Aggregation_STD                                         // STD
+	Aggregation_SUM                                         // SUM
+	Aggregation_COUNT                                       // COUNT
+)
+
 type TimelineData struct {
 	Name              string
 	Transition        string
@@ -119,7 +130,6 @@ out:
 		case "timeline":
 			plotTimeline(data, podstate)
 		case "piechart":
-			fmt.Println("Implement Pie Chart. ")
 			plotPieChart(data, podstate)
 		default:
 			fmt.Printf("Plot type '%s' is not implemented.\n", t)
@@ -133,6 +143,13 @@ type DataForPlotting []DataPoint
 type DataPoint struct {
 	timeStamp  float64
 	numOfElems float64
+}
+
+type DataForPieChart []PieSlice
+
+type PieSlice struct {
+	transitionPhase string
+	numOfElems      float64
 }
 
 func plotTimeline(dat []TimelineData, PodStateFilterSelector string) {
@@ -423,28 +440,39 @@ func addHistogram(histogramName string, p *plot.Plot, dataPoints DataForPlotting
 }
 
 func plotPieChart(dat []TimelineData, PodStateFilterSelector string) {
-	fmt.Println("TODO: Implement Pie Chart ")
-
 	dataDf := dataframe.LoadStructs(dat)
 	dataDf = dataDf.Filter(
 		dataframe.F{Colname: "PodStateFilter", Comparator: series.Eq, Comparando: PodStateFilterSelector},
 	)
 
-	//Transition from Create to Schedule
-	createToScheduleDf := dataDf.Filter(
-		dataframe.F{Colname: "Transition", Comparator: series.Eq, Comparando: "{create schedule 0s}"})
-	createToScheduleDf = createToScheduleDf.Select([]string{"Difference"})
-	createToScheduleDf = createToScheduleDf.Arrange(dataframe.Sort("Difference"))
+	transitionGrouped := dataDf.GroupBy("Transition")
+	aggregated := transitionGrouped.Aggregation([]dataframe.AggregationType{Aggregation_SUM}, []string{"Difference"})
+	groups := aggregated.GroupBy("Transition").GetGroups()
 
-	// TODO: Get cumulative count of values in "Difference" columns per each "Transition".
+	values := createDataForPieChart(groups)
 
+	err := createPieChartPlot("piechart.png", values)
+	if err != nil {
+		log.Fatalf("could not plot the data: %v", err)
+	}
 }
 
-func parsePieChartData() {
+func createDataForPieChart(groups map[string]dataframe.DataFrame) DataForPieChart {
+	var values DataForPieChart
 
+	for _, elem := range groups {
+		if elem.Elem(0, 1).String() == "{create watch 5s}" || elem.Elem(0, 1).String() == "{schedule watch 0s}" {
+			continue
+		}
+		var ps PieSlice
+		ps.numOfElems = elem.Elem(0, 0).Float()
+		ps.transitionPhase = elem.Elem(0, 1).String()
+		values = append(values, ps)
+	}
+	return values
 }
 
-func createPieChartPlot(filename string, histogramName string, data DataForPlotting) error {
+func createPieChartPlot(filename string, data DataForPieChart) error {
 	path := filepath.Join(outputpath, filename)
 	err := os.MkdirAll(outputpath, 0744)
 	if err != nil {
@@ -458,13 +486,39 @@ func createPieChartPlot(filename string, histogramName string, data DataForPlott
 
 	p := plot.New()
 	p.HideAxes()
+	p.Legend.Top = true
 
-	pie, err := piechart.NewPieChart()
-	if err != nil {
-		return fmt.Errorf("could not create pie chart slice %s: %v", pie, err)
+	offset := 0.0
+	totalVal := 0.0
+
+	for _, elem := range data {
+		totalVal += elem.numOfElems
 	}
 
-	wt, err := p.WriterTo(1024, 512, "png")
+	for _, elem := range data {
+		pie, err := piechart.NewPieChart(plotter.Values{elem.numOfElems})
+		if err != nil {
+			return fmt.Errorf("could not create a pie: %v", err)
+		}
+
+		pie.Color = color.RGBA{
+			R: uint8(rand.Intn(255)),
+			G: uint8(rand.Intn(255)),
+			B: uint8(rand.Intn(255)),
+			A: 255}
+		pie.Offset.Value = offset
+		pie.Total = totalVal
+		pie.Labels.Nominal = []string{elem.transitionPhase}
+		pie.Labels.Values.Show = true
+		pie.Labels.Values.Percentage = true
+		pie.Labels.Position = 1
+		p.Add(pie)
+		p.Legend.Add(elem.transitionPhase, pie)
+
+		offset += elem.numOfElems
+	}
+
+	wt, err := p.WriterTo(512, 512, "png")
 	if err != nil {
 		return fmt.Errorf("could not create writer: %v", err)
 	}
@@ -475,10 +529,6 @@ func createPieChartPlot(filename string, histogramName string, data DataForPlott
 	}
 
 	return nil
-}
-
-func addPieChart(piechartName string, p *plot.Plot, data DataForPlotting) {
-
 }
 
 func initFlags() {
