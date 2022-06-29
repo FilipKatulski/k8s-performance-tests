@@ -14,6 +14,7 @@ import (
 	"strings"
 
 	"github.com/benoitmasson/plotters/piechart"
+	figure "github.com/common-nighthawk/go-figure"
 	"github.com/go-gota/gota/dataframe"
 	"github.com/go-gota/gota/series"
 	"gonum.org/v1/plot"
@@ -51,8 +52,11 @@ type TimelineData struct {
 }
 
 func displayHeader() {
-	//TODO Make it more fancy
-	fmt.Println("\n\n  PLOTTER\n\n")
+	fmt.Println()
+	myFigure := figure.NewColorFigure("PLOTTER", "doom", "cyan", true)
+	myFigure.Print()
+	fmt.Println()
+
 }
 
 func parseDataFile(path string) ([]TimelineData, error) {
@@ -152,47 +156,62 @@ type PieSlice struct {
 	numOfElems      float64
 }
 
-func plotTimeline(dat []TimelineData, PodStateFilterSelector string) {
+func slicingData(dat []TimelineData) [4]dataframe.DataFrame {
+	var slicedDf [4]dataframe.DataFrame
+
 	dataDf := dataframe.LoadStructs(dat)
 	dataDf = dataDf.Filter(
-		dataframe.F{Colname: "PodStateFilter", Comparator: series.Eq, Comparando: PodStateFilterSelector},
+		dataframe.F{Colname: "PodStateFilter", Comparator: series.Eq, Comparando: podstate},
 	)
 
 	CreatedDf := dataDf.Filter(
 		dataframe.F{Colname: "Transition", Comparator: series.Eq, Comparando: "{create schedule 0s}"},
 	)
-
-	CreatedDf = CreatedDf.Select([]string{"FromUnix"})
-	CreatedDf = CreatedDf.Arrange(dataframe.Sort("FromUnix"))
-	minimalVal, _ := CreatedDf.Elem(0, 0).Int()
+	slicedDf[0] = CreatedDf
 
 	ScheduledDf := dataDf.Filter(
 		dataframe.F{Colname: "Transition", Comparator: series.Eq, Comparando: "{create schedule 0s}"},
 	)
-	ScheduledDf = ScheduledDf.Select([]string{"ToUnix"})
-	ScheduledDf = ScheduledDf.Arrange(dataframe.Sort("ToUnix"))
+	slicedDf[1] = ScheduledDf
 
 	RunDf := dataDf.Filter(
 		dataframe.F{Colname: "Transition", Comparator: series.Eq, Comparando: "{schedule run 0s}"},
 	)
-	RunDf = RunDf.Select([]string{"ToUnix"})
-	RunDf = RunDf.Arrange(dataframe.Sort("ToUnix"))
+	slicedDf[2] = RunDf
 
 	WatchedDf := dataDf.Filter(
 		dataframe.F{Colname: "Transition", Comparator: series.Eq, Comparando: "{run watch 0s}"},
 	)
+	slicedDf[3] = WatchedDf
+
+	return slicedDf
+}
+
+func plotTimeline(dat []TimelineData, PodStateFilterSelector string) {
+	slicedData := slicingData(dat)
+
+	CreatedDf := slicedData[0]
+	CreatedDf = CreatedDf.Select([]string{"FromUnix"})
+	CreatedDf = CreatedDf.Arrange(dataframe.Sort("FromUnix"))
+
+	minimalVal, _ := CreatedDf.Elem(0, 0).Int()
+
+	ScheduledDf := slicedData[1]
+	ScheduledDf = ScheduledDf.Select([]string{"ToUnix"})
+	ScheduledDf = ScheduledDf.Arrange(dataframe.Sort("ToUnix"))
+
+	RunDf := slicedData[2]
+	RunDf = RunDf.Select([]string{"ToUnix"})
+	RunDf = RunDf.Arrange(dataframe.Sort("ToUnix"))
+
+	WatchedDf := slicedData[3]
 	WatchedDf = WatchedDf.Select([]string{"ToUnix"})
 	WatchedDf = WatchedDf.Arrange(dataframe.Sort("ToUnix"))
 
-	createdGroups := parseTimelineDf(&CreatedDf, minimalVal, "FromUnix")
-	schedulerGroups := parseTimelineDf(&ScheduledDf, minimalVal, "ToUnix")
-	runGroups := parseTimelineDf(&RunDf, minimalVal, "ToUnix")
-	watchGroups := parseTimelineDf(&WatchedDf, minimalVal, "ToUnix")
-
-	createdValues := createDataForTimelinePlotting(createdGroups)
-	scheduledValues := createDataForTimelinePlotting(schedulerGroups)
-	runValues := createDataForTimelinePlotting(runGroups)
-	watchValues := createDataForTimelinePlotting(watchGroups)
+	createdValues := createDataForTimelinePlotting(parseTimelineDf(&CreatedDf, minimalVal, "FromUnix"))
+	scheduledValues := createDataForTimelinePlotting(parseTimelineDf(&ScheduledDf, minimalVal, "ToUnix"))
+	runValues := createDataForTimelinePlotting(parseTimelineDf(&RunDf, minimalVal, "ToUnix"))
+	watchValues := createDataForTimelinePlotting(parseTimelineDf(&WatchedDf, minimalVal, "ToUnix"))
 
 	err := createTimelinePlot("timeline.png", createdValues, scheduledValues, runValues, watchValues)
 	if err != nil {
@@ -253,7 +272,7 @@ func addNewTimeLine(lineName string, p *plot.Plot, dataPoints DataForPlotting) {
 		pxys[i].Y = elem.numOfElems
 	}
 
-	fmt.Println("XYs of ", lineName, ": ", pxys)
+	fmt.Println("Creating XYs of ", lineName, " timeline... ")
 
 	line, err := plotter.NewLine(pxys)
 	if err != nil {
@@ -281,7 +300,7 @@ func createTimelinePlot(filename string, created DataForPlotting, scheduled Data
 	}
 	defer f.Close()
 
-	fmt.Println("Creating Timeline plot: ")
+	fmt.Println("\nCreating Timeline plot: \n")
 
 	p := plot.New()
 	p.Title.Text = "Timeline"
@@ -307,14 +326,13 @@ func createTimelinePlot(filename string, created DataForPlotting, scheduled Data
 }
 
 func plotHistograms(dat []TimelineData, PodStateFilterSelector string) {
-	dataDf := dataframe.LoadStructs(dat)
-	dataDf = dataDf.Filter(
-		dataframe.F{Colname: "PodStateFilter", Comparator: series.Eq, Comparando: PodStateFilterSelector},
-	)
+
+	slicedData := slicingData(dat)
+
+	fmt.Println("\nCreating Histograms: \n")
 
 	//Transition from Create to Schedule
-	createToScheduleDf := dataDf.Filter(
-		dataframe.F{Colname: "Transition", Comparator: series.Eq, Comparando: "{create schedule 0s}"})
+	createToScheduleDf := slicedData[0]
 	createToScheduleDf = createToScheduleDf.Select([]string{"Difference"})
 	createToScheduleDf = createToScheduleDf.Arrange(dataframe.Sort("Difference"))
 	createToScheduleValues := createDataForHistogramPlotting(parseHistogramDf(&createToScheduleDf))
@@ -324,9 +342,7 @@ func plotHistograms(dat []TimelineData, PodStateFilterSelector string) {
 	}
 
 	//Transition from Schedule to Run
-	scheduleToRunDf := dataDf.Filter(
-		dataframe.F{Colname: "Transition", Comparator: series.Eq, Comparando: "{schedule run 0s}"},
-	)
+	scheduleToRunDf := slicedData[1]
 	scheduleToRunDf = scheduleToRunDf.Select([]string{"Difference"})
 	scheduleToRunDf = scheduleToRunDf.Arrange(dataframe.Sort("Difference"))
 	scheduleToRunValues := createDataForHistogramPlotting(parseHistogramDf(&scheduleToRunDf))
@@ -336,9 +352,7 @@ func plotHistograms(dat []TimelineData, PodStateFilterSelector string) {
 	}
 
 	//Transition from Run to Watch
-	runToWatchDf := dataDf.Filter(
-		dataframe.F{Colname: "Transition", Comparator: series.Eq, Comparando: "{run watch 0s}"},
-	)
+	runToWatchDf := slicedData[2]
 	runToWatchDf = runToWatchDf.Select([]string{"Difference"})
 	runToWatchDf = runToWatchDf.Arrange(dataframe.Sort("Difference"))
 	runToWatchValues := createDataForHistogramPlotting(parseHistogramDf(&runToWatchDf))
@@ -348,9 +362,7 @@ func plotHistograms(dat []TimelineData, PodStateFilterSelector string) {
 	}
 
 	//Transition from Create to Watch
-	createToWatchDf := dataDf.Filter(
-		dataframe.F{Colname: "Transition", Comparator: series.Eq, Comparando: "{create watch 5s}"},
-	)
+	createToWatchDf := slicedData[3]
 	createToWatchDf = createToWatchDf.Select([]string{"Difference"})
 	createToWatchDf = createToWatchDf.Arrange(dataframe.Sort("Difference"))
 	createToWatchValues := createDataForHistogramPlotting(parseHistogramDf(&createToWatchDf))
@@ -431,6 +443,8 @@ func addHistogram(histogramName string, p *plot.Plot, dataPoints DataForPlotting
 		pxys[i].Y = elem.numOfElems
 	}
 
+	fmt.Println("Creating XYs of ", histogramName, " histogram...")
+
 	hist, err := plotter.NewHistogram(pxys, binsNumber)
 	if err != nil {
 		log.Fatalf("could not add new line %s: %v", histogramName, err)
@@ -484,6 +498,8 @@ func createPieChartPlot(filename string, data DataForPieChart) error {
 	}
 	defer f.Close()
 
+	fmt.Println("\nCreating Pie Chart: \n")
+
 	p := plot.New()
 	p.HideAxes()
 	p.Legend.Top = true
@@ -496,6 +512,9 @@ func createPieChartPlot(filename string, data DataForPieChart) error {
 	}
 
 	for _, elem := range data {
+
+		fmt.Println("Creating Pie slice of", elem.transitionPhase, "phase... ")
+
 		pie, err := piechart.NewPieChart(plotter.Values{elem.numOfElems})
 		if err != nil {
 			return fmt.Errorf("could not create a pie: %v", err)
