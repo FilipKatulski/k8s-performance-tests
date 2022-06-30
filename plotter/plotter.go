@@ -36,7 +36,6 @@ var (
 	outputpath   string
 	plots        string
 	podstate     string
-	additional   string
 )
 
 //go:generate stringer -type=AggregationType -linecomment
@@ -565,7 +564,6 @@ func initFlags() {
 	flag.StringVar(&outputpath, "outputpath", ".", "Specify the path for the output PNG files. ")
 	flag.StringVar(&podstate, "podstate", "Stateless", "Specify the state of Pods. ")
 	flag.StringVar(&plots, "plots", "all", "Specify types of plots, separate with ',' ")
-	flag.StringVar(&additional, "additional", "", "Specify additional parameteres for plotting, separate with ',' ")
 	flag.Parse()
 }
 
