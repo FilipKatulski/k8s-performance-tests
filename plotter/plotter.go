@@ -36,6 +36,7 @@ var (
 	outputpath   string
 	plots        string
 	podstate     string
+	binsNumber   int
 )
 
 //go:generate stringer -type=AggregationType -linecomment
@@ -312,9 +313,10 @@ func createTimelinePlot(filename string, created DataForPlotting, scheduled Data
 	fmt.Println("\nCreating Timeline plot: \n")
 
 	p := plot.New()
-	p.Title.Text = "Timeline"
+	p.Title.Text = "Number of Pods vs Time"
 	p.X.Label.Text = "Time [s]"
 	p.Y.Label.Text = "Number of Pods"
+	p.Add(plotter.NewGrid())
 
 	addNewTimeLine("Created", p, created)
 	addNewTimeLine("Scheduled", p, scheduled)
@@ -345,7 +347,7 @@ func plotHistograms(dat []TimelineData, PodStateFilterSelector string) {
 	createToScheduleDf = createToScheduleDf.Select([]string{"Difference"})
 	createToScheduleDf = createToScheduleDf.Arrange(dataframe.Sort("Difference"))
 	createToScheduleValues := createDataForHistogramPlotting(parseHistogramDf(&createToScheduleDf))
-	err := createHistogramPlot("createtoschedule-hist.png", "{create schedule 0s}", createToScheduleValues)
+	err := createHistogramPlot("createtoschedule-hist.png", "Create to Schedule", createToScheduleValues)
 	if err != nil {
 		log.Fatalf("could not plot the data: %v", err)
 	}
@@ -355,7 +357,7 @@ func plotHistograms(dat []TimelineData, PodStateFilterSelector string) {
 	scheduleToRunDf = scheduleToRunDf.Select([]string{"Difference"})
 	scheduleToRunDf = scheduleToRunDf.Arrange(dataframe.Sort("Difference"))
 	scheduleToRunValues := createDataForHistogramPlotting(parseHistogramDf(&scheduleToRunDf))
-	err = createHistogramPlot("scheduletorun-hist.png", "{schedule run 0s}", scheduleToRunValues)
+	err = createHistogramPlot("scheduletorun-hist.png", "Schedule to Run", scheduleToRunValues)
 	if err != nil {
 		log.Fatalf("could not plot the data: %v", err)
 	}
@@ -365,7 +367,7 @@ func plotHistograms(dat []TimelineData, PodStateFilterSelector string) {
 	runToWatchDf = runToWatchDf.Select([]string{"Difference"})
 	runToWatchDf = runToWatchDf.Arrange(dataframe.Sort("Difference"))
 	runToWatchValues := createDataForHistogramPlotting(parseHistogramDf(&runToWatchDf))
-	err = createHistogramPlot("runtowatch-hist.png", "{run watch 0s}", runToWatchValues)
+	err = createHistogramPlot("runtowatch-hist.png", "Run to Watch", runToWatchValues)
 	if err != nil {
 		log.Fatalf("could not plot the data: %v", err)
 	}
@@ -375,7 +377,7 @@ func plotHistograms(dat []TimelineData, PodStateFilterSelector string) {
 	createToWatchDf = createToWatchDf.Select([]string{"Difference"})
 	createToWatchDf = createToWatchDf.Arrange(dataframe.Sort("Difference"))
 	createToWatchValues := createDataForHistogramPlotting(parseHistogramDf(&createToWatchDf))
-	err = createHistogramPlot("createtowatch-hist.png", "{create to watch 5s}", createToWatchValues)
+	err = createHistogramPlot("createtowatch-hist.png", "Create to Watch", createToWatchValues)
 	if err != nil {
 		log.Fatalf("could not plot the data: %v", err)
 	}
@@ -422,7 +424,7 @@ func createHistogramPlot(filename string, histogramName string, data DataForPlot
 	defer f.Close()
 
 	p := plot.New()
-	p.X.Label.Text = "Time"
+	p.X.Label.Text = "Time [ms]"
 	p.Y.Label.Text = "Number of Pods"
 
 	addHistogram(histogramName, p, data)
@@ -442,8 +444,6 @@ func createHistogramPlot(filename string, histogramName string, data DataForPlot
 
 func addHistogram(histogramName string, p *plot.Plot, dataPoints DataForPlotting) {
 	pxys := make(plotter.XYs, len(dataPoints))
-
-	binsNumber := 200
 
 	for j, elem := range dataPoints {
 		pxys[j].X = elem.timeStamp
@@ -489,7 +489,8 @@ func createDataForPieChart(groups map[string]dataframe.DataFrame) DataForPieChar
 		}
 		var ps PieSlice
 		ps.numOfElems = elem.Elem(0, 0).Float()
-		ps.transitionPhase = elem.Elem(0, 1).String()
+		elemName := elem.Elem(0, 1).String()
+		ps.transitionPhase = elemName[1 : len(elemName)-4]
 		values = append(values, ps)
 	}
 	return values
@@ -564,6 +565,7 @@ func initFlags() {
 	flag.StringVar(&outputpath, "outputpath", ".", "Specify the path for the output PNG files. ")
 	flag.StringVar(&podstate, "podstate", "Stateless", "Specify the state of Pods. ")
 	flag.StringVar(&plots, "plots", "all", "Specify types of plots, separate with ',' ")
+	flag.IntVar(&binsNumber, "bins", 150, "Speficy number of bins for histogram plots. ")
 	flag.Parse()
 }
 
