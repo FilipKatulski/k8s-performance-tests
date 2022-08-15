@@ -1,15 +1,35 @@
 # ClusterLoader
 
+This clusterloader module was modified by Filip Katulski <filip.katulski@cern.ch>, TDAQ ATLAS project, CERN.
+
+It was suited to run cluster density tests and to retreive timeline data. The data analysis adn plotting are described further down this file.  
+
 ## Running ClusterLoader
 
 To run ClusterLoader type:
+
+- Set the KUBECONFIG and GOPATH env:
+```
+export KUBECONFIG=~/example/filepath/config-tbed
+export GOPATH=~/example/path/to/pkg
+```
+- Then follow one of these commands:
 ```
 go run cmd/clusterloader.go --kubeconfig=kubeConfig.yaml --testconfig=config.yaml --provider=local
 ```
-OR
+
 ```
 ./run-e2e.sh --testconfig=config.yaml --provider=local
 ```
+
+
+```
+./run.sh
+```
+
+Or run it manually according to the structure provided in run.sh and run-e2e.sh files.
+
+### Quick start
 
 The simplest way to get acquainted with ClusterLoader is using [kind](https://kind.sigs.k8s.io/). Provision a cluster and ensure you can SSH to localhost. Eg. running the load test:
 
@@ -165,6 +185,17 @@ Allows to scrape metrics from all pods with specific label. Here you can find ex
 ## Vendor
 
 Vendor is created using [Go modules].
+
+## Data Analysis and Plotter module
+
+Plotter go module can be used to plot Timeline data gathered by clusterloader density tests (i.e. cl2-density-config.yaml). Plots are saved as PNG files and consist of timelines, histograms and a piechart.
+
+A Jupyter Notebook was created for interactive visualisations created by Python and Plotly library. For instructions on how to create plots please follow the instructions inside the folder. 
+
+Standalone version of the plotter module can be found [here](https://gitlab.cern.ch/fkatulsk/cl2-plotter). 
+
+This module was created by Filip Katulski <filip.katulski@cern.ch>, TDAQ ATLAS project, CERN 
+
 
 ---
 

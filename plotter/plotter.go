@@ -36,6 +36,7 @@ var (
 	outputpath   string
 	plots        string
 	podstate     string
+	binsNumber   int
 )
 
 //go:generate stringer -type=AggregationType -linecomment
@@ -297,6 +298,27 @@ func addNewTimeLine(lineName string, p *plot.Plot, dataPoints DataForPlotting) {
 	p.Legend.Add(lineName, line)
 }
 
+type myTicks struct{}
+
+func (myTicks) Ticks(min, max float64) []plot.Tick {
+
+	//TODO: Find a way to make passing min/max working, for now we have to overwrite them
+	min = 0.0
+
+	max = 30.0
+
+	tks := plot.DefaultTicks{}.Ticks(min, max)
+
+	for i, t := range tks {
+		if t.Label == "" { // Skip minor ticks, they are fine.
+			tks[i].Label = ""
+		}
+	}
+
+	return tks
+
+}
+
 func createTimelinePlot(filename string, created DataForPlotting, scheduled DataForPlotting, run DataForPlotting, watch DataForPlotting) error {
 	path := filepath.Join(outputpath, filename)
 	err := os.MkdirAll(outputpath, 0744)
@@ -312,14 +334,22 @@ func createTimelinePlot(filename string, created DataForPlotting, scheduled Data
 	fmt.Println("\nCreating Timeline plot: \n")
 
 	p := plot.New()
-	p.Title.Text = "Timeline"
+	p.Title.Text = "Number of Pods vs Time"
 	p.X.Label.Text = "Time [s]"
+
+	//TODO: Implement programmatically the way to get more Ticks than 3 major and some minor
+
+	myTicks{}.Ticks(0.0, 10.0)
+	p.X.Tick.Marker = myTicks{}
+
 	p.Y.Label.Text = "Number of Pods"
+	grid := plotter.NewGrid()
+	p.Add(grid)
 
 	addNewTimeLine("Created", p, created)
 	addNewTimeLine("Scheduled", p, scheduled)
-	addNewTimeLine("Run", p, run)
-	addNewTimeLine("Watch", p, watch)
+	addNewTimeLine("Running", p, run)
+	addNewTimeLine("Watched", p, watch)
 
 	wt, err := p.WriterTo(1024, 512, "png")
 	if err != nil {
@@ -345,7 +375,7 @@ func plotHistograms(dat []TimelineData, PodStateFilterSelector string) {
 	createToScheduleDf = createToScheduleDf.Select([]string{"Difference"})
 	createToScheduleDf = createToScheduleDf.Arrange(dataframe.Sort("Difference"))
 	createToScheduleValues := createDataForHistogramPlotting(parseHistogramDf(&createToScheduleDf))
-	err := createHistogramPlot("createtoschedule-hist.png", "{create schedule 0s}", createToScheduleValues)
+	err := createHistogramPlot("createtoschedule-hist.png", "Create to Schedule", createToScheduleValues)
 	if err != nil {
 		log.Fatalf("could not plot the data: %v", err)
 	}
@@ -355,7 +385,7 @@ func plotHistograms(dat []TimelineData, PodStateFilterSelector string) {
 	scheduleToRunDf = scheduleToRunDf.Select([]string{"Difference"})
 	scheduleToRunDf = scheduleToRunDf.Arrange(dataframe.Sort("Difference"))
 	scheduleToRunValues := createDataForHistogramPlotting(parseHistogramDf(&scheduleToRunDf))
-	err = createHistogramPlot("scheduletorun-hist.png", "{schedule run 0s}", scheduleToRunValues)
+	err = createHistogramPlot("scheduletorun-hist.png", "Schedule to Run", scheduleToRunValues)
 	if err != nil {
 		log.Fatalf("could not plot the data: %v", err)
 	}
@@ -365,7 +395,7 @@ func plotHistograms(dat []TimelineData, PodStateFilterSelector string) {
 	runToWatchDf = runToWatchDf.Select([]string{"Difference"})
 	runToWatchDf = runToWatchDf.Arrange(dataframe.Sort("Difference"))
 	runToWatchValues := createDataForHistogramPlotting(parseHistogramDf(&runToWatchDf))
-	err = createHistogramPlot("runtowatch-hist.png", "{run watch 0s}", runToWatchValues)
+	err = createHistogramPlot("runtowatch-hist.png", "Run to Watch", runToWatchValues)
 	if err != nil {
 		log.Fatalf("could not plot the data: %v", err)
 	}
@@ -375,7 +405,7 @@ func plotHistograms(dat []TimelineData, PodStateFilterSelector string) {
 	createToWatchDf = createToWatchDf.Select([]string{"Difference"})
 	createToWatchDf = createToWatchDf.Arrange(dataframe.Sort("Difference"))
 	createToWatchValues := createDataForHistogramPlotting(parseHistogramDf(&createToWatchDf))
-	err = createHistogramPlot("createtowatch-hist.png", "{create to watch 5s}", createToWatchValues)
+	err = createHistogramPlot("createtowatch-hist.png", "Create to Watch", createToWatchValues)
 	if err != nil {
 		log.Fatalf("could not plot the data: %v", err)
 	}
@@ -422,8 +452,9 @@ func createHistogramPlot(filename string, histogramName string, data DataForPlot
 	defer f.Close()
 
 	p := plot.New()
-	p.X.Label.Text = "Time"
+	p.X.Label.Text = "Time [ms]"
 	p.Y.Label.Text = "Number of Pods"
+	p.Add(plotter.NewGrid())
 
 	addHistogram(histogramName, p, data)
 
@@ -442,8 +473,6 @@ func createHistogramPlot(filename string, histogramName string, data DataForPlot
 
 func addHistogram(histogramName string, p *plot.Plot, dataPoints DataForPlotting) {
 	pxys := make(plotter.XYs, len(dataPoints))
-
-	binsNumber := 200
 
 	for j, elem := range dataPoints {
 		pxys[j].X = elem.timeStamp
@@ -489,7 +518,8 @@ func createDataForPieChart(groups map[string]dataframe.DataFrame) DataForPieChar
 		}
 		var ps PieSlice
 		ps.numOfElems = elem.Elem(0, 0).Float()
-		ps.transitionPhase = elem.Elem(0, 1).String()
+		elemName := elem.Elem(0, 1).String()
+		ps.transitionPhase = elemName[1 : len(elemName)-4]
 		values = append(values, ps)
 	}
 	return values
@@ -564,6 +594,7 @@ func initFlags() {
 	flag.StringVar(&outputpath, "outputpath", ".", "Specify the path for the output PNG files. ")
 	flag.StringVar(&podstate, "podstate", "Stateless", "Specify the state of Pods. ")
 	flag.StringVar(&plots, "plots", "all", "Specify types of plots, separate with ',' ")
+	flag.IntVar(&binsNumber, "bins", 150, "Speficy number of bins for histogram plots. ")
 	flag.Parse()
 }
 

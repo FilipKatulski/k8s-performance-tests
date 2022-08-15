@@ -1,0 +1,4 @@
+# Libraries used by the Jupyter notebook
+numpy
+pandas
+plotly
