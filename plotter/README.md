@@ -68,8 +68,8 @@ There is also an interactive data plotting module created with Python and Plotly
 
 # Go module plot examples
 
-![Timeline plot](/example-plots/timeline.png "Timeline plot")
+![Timeline plot](plotter/example-plots/timeline.png "Timeline plot")
 
-![Create to Schedule histogram](/example-plots/createtoschedule-hist.png "Create to Schedule histogram")
+![Create to Schedule histogram](plotter/example-plots/createtoschedule-hist.png "Create to Schedule histogram")
 
-![Pie Chart](/example-plots/piechart.png "Pie Chart")
+![Pie Chart](plotter/example-plots/piechart.png "Pie Chart")
