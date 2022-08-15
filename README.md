@@ -2,7 +2,7 @@
 
 This clusterloader module was modified by Filip Katulski <filip.katulski@cern.ch>, TDAQ ATLAS project, CERN.
 
-It was suited to run cluster density tests and to retreive timeline data. The data analysis adn plotting are described further down this file.  
+It was suited to run cluster density tests and to retreive timeline data. The data analysis and plotting are described further down this file.  
 
 ## Running ClusterLoader
 
