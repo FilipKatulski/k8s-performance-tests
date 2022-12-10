@@ -1,6 +1,6 @@
 # ClusterLoader
 
-This clusterloader module was modified by Filip Katulski <filip.katulski@cern.ch>, TDAQ ATLAS project, CERN.
+This clusterloader module was modified by me, Filip Katulski, during my cooperation with EP-ADT-DQ group at ATLAS project, CERN.
 
 It was suited to run cluster density tests and to retreive timeline data. The data analysis and plotting are described further down this file.  
 
